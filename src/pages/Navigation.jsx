@@ -2,7 +2,7 @@ import React from 'react';
 import LoginScreen from "./LoginScreen";
 import HomeScreen from "./HomeScreen";
 import {NavigationContainer} from "@react-navigation/native";
-import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from "@react-navigation/stack";
 
@@ -17,6 +17,8 @@ import {Platform, View} from "react-native";
 import {LOGIN_REQUESTED, LOGOUT_REQUESTED} from "../actions/types";
 import DetailsScreen from "./DetailsScreen";
 import EmptyScreen from "./EmptyScreen";
+import Wallet from "./Wallet";
+import Notifications from "./Notifications";
 
 const isInClient = Constants.default.appOwnership === 'expo';
 // const isInClient = false;
@@ -60,7 +62,7 @@ function MainNavigation() {
             />
             <Tab.Screen
                 name="Wallet"
-                component={EmptyScreen}
+                component={Wallet}
                 options={{
                     tabBarLabel: 'Wallet',
                     tabBarIcon: ({ color, size }) => (
@@ -69,7 +71,7 @@ function MainNavigation() {
                 }}/>
             <Tab.Screen
                 name="Notifications"
-                component={EmptyScreen}
+                component={Notifications}
                 options={{
                     tabBarLabel: 'Notification',
                     tabBarIcon: ({ color, size }) => (

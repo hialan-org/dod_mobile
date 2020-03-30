@@ -1,42 +1,71 @@
-import {View, Text, Button, StyleSheet} from "react-native";
+import {View, Text, Button, StyleSheet, SafeAreaView, ScrollView, StatusBar, Dimensions} from "react-native";
 import React from "react";
-import {LOGOUT_REQUESTED} from "../actions/types";
-import { connect } from 'react-redux';
+import {GET_DOD_REQUESTED, LOGOUT_REQUESTED} from "../actions/types";
+import {connect} from 'react-redux';
 import * as GoogleSignIn from 'expo-google-sign-in';
 import ProfitChart from "../components/ProfitChart";
+import {Ionicons, Entypo} from '@expo/vector-icons';
+import {common} from "../utils/stylesheet";
+import {ListStock} from "../components/ListStocks";
+import {Line} from "../components/Line";
 
-function HomeScreen({navigation, logout, profit}) {
+const { height } = Dimensions.get('window');
 
-    async function signOutAsync() {
-        await GoogleSignIn.signOutAsync();
-        logout();
+// function HomeScreen({navigation, logout, profit}) {
+class HomeScreen extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    state = {
+        screenHeight: height,
     };
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Investing</Text>
-            <Text style={[styles.profit, profit >=0 ? styles.positiveProfit : styles.negativeProfit]}>{profit}</Text>
-            <ProfitChart/>
-            <Button title="Logout" onPress={() => signOutAsync()} />
-        </View>
-    );
+    signOutAsync = async () => {
+        await GoogleSignIn.signOutAsync();
+        this.props.logout();
+    };
+
+    componentDidMount = () => {
+        this.props.getDoDStocks();
+    }
+
+    onContentSizeChange = (contentWidth, contentHeight) => {
+        this.setState({ screenHeight: contentHeight });
+    };
+
+    render() {
+        const scrollEnabled = this.state.screenHeight > height;
+        return (
+            <View style={common.containerWrapper}>
+                <StatusBar barStyle="light-content" backgroundColor="#468189"/>
+                <ScrollView
+                    style={{flex: 1}}
+                    contentContainerStyle={common.scrollView}
+                    scrollEnabled={scrollEnabled}
+                    onContentSizeChange={this.onContentSizeChange}
+                >
+                    <View style={common.container}>
+                        <Text style={common.title}>Investing</Text>
+                        <Text
+                            style={[styles.profit, this.props.profit >= 0 ? styles.positiveProfit : styles.negativeProfit]}>
+                            {this.props.profit >= 0 ?
+                                (<Entypo name="triangle-up" style={common.icon}/>) :
+                                (<Entypo name="triangle-down" style={common.icon}/>)}
+                            {this.props.profit}
+                        </Text>
+                        <ProfitChart/>
+                        <Line/>
+                        <Text>Stocks</Text>
+                        <ListStock stocks={this.props.allStocks}/>
+                    </View>
+                </ScrollView>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        marginTop: 10,
-        marginLeft: 20,
-        marginRight: 20,
-        marginBottom: 10,
-    },
-    title: {
-        fontWeight: 'bold',
-        fontSize: 30,
-        alignSelf: 'flex-start',
-    },
     profit: {
         fontSize: 20,
         alignSelf: 'flex-start',
@@ -46,18 +75,25 @@ const styles = StyleSheet.create({
     },
     negativeProfit: {
         color: "red",
-    }
+    },
+    content: {
+        flexGrow: 1,
+        justifyContent: "space-between",
+        padding: 10,
+    },
 });
 
 const mapStateToProps = state => {
     return {
         profit: state.stat.profit,
+        allStocks: state.stock.allStocks,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return ({
         logout: () => dispatch({type: LOGOUT_REQUESTED}),
+        getDoDStocks: () => dispatch({type: GET_DOD_REQUESTED}),
     })
 }
 

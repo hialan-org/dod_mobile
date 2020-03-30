@@ -1,14 +1,9 @@
 import {
-    LOGIN_REQUESTED,
-    LOGIN_FAILED,
-    LOGIN_SUCCESS,
-    LOGOUT_REQUESTED,
-    LOGOUT_FAILED,
-    LOGOUT_SUCCESS, GET_STAT_REQUESTED, GET_STAT_SUCCESS, GET_STAT_FAILED
+    GET_STAT_REQUESTED, GET_STAT_SUCCESS, GET_STAT_FAILED
 } from "../actions/types";
 
 const initialState = {
-    profit: 0,
+    profit: 10,
 }
 
 export default function statReducer(state = initialState, action) {
