@@ -5,8 +5,9 @@ import Constants from 'expo-constants';
 function Item({ stock }) {
     return (
         <View style={styles.item}>
-            <Text style={styles.title}>{stock.symbol}</Text>
-            <Text style={styles.title}>${stock.price}</Text>
+            <Text style={styles.text}>{stock.symbol}</Text>
+            <Text style={styles.text}>${stock.latestPrice}</Text>
+            <Text style={styles.text}>{stock.dividendYield}</Text>
         </View>
     );
 }
@@ -36,7 +37,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    title: {
-        fontSize: 20,
+    text: {
+        fontSize: 15,
+        alignSelf: 'flex-start',
     },
 });

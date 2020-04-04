@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://5dih1d57x5.execute-api.us-west-1.amazonaws.com/Prod';
+export const API_BASE_URL = 'https://dlj4o26lpe.execute-api.us-west-2.amazonaws.com/Prod';
 
 export const ROLE = 'role';
 export const ROLE_ADMIN = 'admin';
