@@ -1,6 +1,6 @@
 import {View, Text, Button, StyleSheet, SafeAreaView, ScrollView, StatusBar, Dimensions} from "react-native";
 import React from "react";
-import {GET_DOD_REQUESTED, LOGOUT_REQUESTED} from "../actions/types";
+import {GET_TOP_YIELD_STOCKS_REQUESTED, LOGOUT_REQUESTED} from "../actions/types";
 import {connect} from 'react-redux';
 import * as GoogleSignIn from 'expo-google-sign-in';
 import ProfitChart from "../components/ProfitChart";
@@ -27,7 +27,6 @@ class HomeScreen extends React.Component {
     };
 
     componentDidMount = () => {
-        this.props.getDoDStocks();
     }
 
     onContentSizeChange = (contentWidth, contentHeight) => {
@@ -93,7 +92,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return ({
         logout: () => dispatch({type: LOGOUT_REQUESTED}),
-        getDoDStocks: () => dispatch({type: GET_DOD_REQUESTED}),
+        getDoDStocks: () => dispatch({type: GET_TOP_YIELD_STOCKS_REQUESTED}),
     })
 }
 

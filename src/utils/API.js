@@ -1,8 +1,8 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import {ACCESS_TOKEN} from "../constants/SecureStore";
+import {API_BASE_URL} from "../constants/data";
 
-const API_BASE_URL = 'https://5dih1d57x5.execute-api.us-west-1.amazonaws.com/Prod';
 
 export const loginApi = async (accessToken) => {
     const loginApiUrl = '/loginWithGoogle';
@@ -16,12 +16,12 @@ export const loginApi = async (accessToken) => {
             return result.data.body;
         }).catch(err => {
             console.log(err);
-            return err;
+            throw err;
         });
 }
 
-export const getDoDApi = async () => {
-    const getDodApiUrl = '/stocks/dogOfTheDow';
+export const getTopYieldApi = async (date, range) => {
+    const getDodApiUrl = `/stocks/getTopYield?date=${date}&range=${range}`;
     const accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN);
     let options = {
         headers: {
@@ -33,6 +33,6 @@ export const getDoDApi = async () => {
             return result.data;
         }).catch(err => {
             console.log(err);
-            return err;
+            throw err;
         });
 }
