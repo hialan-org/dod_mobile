@@ -2,7 +2,7 @@ import {
     GET_STAT_REQUESTED,
     GET_STAT_SUCCESS,
     GET_STAT_FAILED,
-    GET_NOTIFICATION,
+    GET_NOTIFICATION_REQUESTED,
     GET_NOTIFICATION_SUCCESS,
     GET_NOTIFICATION_FAILED
 } from "../actions/types";
@@ -21,7 +21,7 @@ const initialState = [{
 
 export default function statReducer(state = initialState, action) {
     switch (action.type) {
-        case GET_NOTIFICATION:
+        case GET_NOTIFICATION_REQUESTED:
             return {
                 ...state,
             };

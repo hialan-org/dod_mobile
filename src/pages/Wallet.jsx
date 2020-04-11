@@ -11,9 +11,9 @@ import {formatDateString} from "../utils";
 
 const {height} = Dimensions.get('window');
 let yesterday = new Date();
-yesterday.setDate(yesterday.getDate()-1);
+yesterday.setDate(yesterday.getDate() - 1);
 
-const Wallet = ({getDoDStocks, topStocksByDate}) => {
+const Wallet = ({getDoDStocks, topStocksByDate, navigation}) => {
 // class Wallet extends React.Component {
     const [money, setMoney] = useState("");
     const [checked, setChecked] = useState("dod");
@@ -42,12 +42,24 @@ const Wallet = ({getDoDStocks, topStocksByDate}) => {
         getDoDStocks(date);
     }
 
+    const scrollEnabled = screenHeight > height;
+
+    const renderItem = (stock, index) => {
+        return (
+            <View style={common.tableItem} key={index}>
+                <Text style={common.tableText}>{stock.symbol}</Text>
+                <Text style={common.tableText}>${stock.latestPrice}</Text>
+                <Text style={common.tableText}>{stock.dividendYield}</Text>
+            </View>
+        );
+    }
+
     return (
         <SafeAreaView style={common.containerWrapper}>
             <ScrollView
                 style={{flex: 1}}
                 contentContainerStyle={common.scrollView}
-                scrollEnabled={true}
+                scrollEnabled={scrollEnabled}
                 onContentSizeChange={onContentSizeChange}
             >
                 <View style={common.container}>
@@ -107,15 +119,32 @@ const Wallet = ({getDoDStocks, topStocksByDate}) => {
                         <Text>Suggest</Text>
                     </TouchableOpacity>
 
-                    <ListStock stocks={
-                        topStocksByDate[formatDateString(date)]
-                            ? topStocksByDate[formatDateString(date)]
-                            : []}/>
+                    <ListStock titles={["Symbol", "Price", "Yield"]}
+                               stocks={topStocksByDate[formatDateString(date)]
+                                   ? topStocksByDate[formatDateString(date)]
+                                   : []}
+                    renderItem={renderItem}/>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => navigation.navigate('BuyStocks')}>
+                        <Text>Buy Stocks</Text>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         </SafeAreaView>
     );
 }
+
+const styles = StyleSheet.create({
+    button: {
+        alignSelf: 'center',
+        alignItems: 'center',
+        backgroundColor: '#DDDDDD',
+        width: 200,
+        padding: 10,
+        marginTop: 16,
+    },
+})
 
 const mapStateToProps = state => {
     return {
@@ -134,16 +163,5 @@ const mapDispatchToProps = dispatch => {
         }),
     })
 }
-
-const styles = StyleSheet.create({
-    button: {
-        alignSelf: 'center',
-        alignItems: 'center',
-        backgroundColor: '#DDDDDD',
-        width: 200,
-        padding: 10,
-        marginTop: 16,
-    },
-})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

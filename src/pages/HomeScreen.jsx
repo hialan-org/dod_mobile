@@ -33,6 +33,16 @@ class HomeScreen extends React.Component {
         this.setState({ screenHeight: contentHeight });
     };
 
+    renderItem = (stock, index) => {
+        return (
+            <View style={common.tableItem} key={index}>
+                <Text style={common.tableText}>{stock.symbol}</Text>
+                <Text style={common.tableText}>${stock.latestPrice}</Text>
+                <Text style={common.tableText}>{stock.dividendYield}</Text>
+            </View>
+        );
+    }
+
     render() {
         const scrollEnabled = this.state.screenHeight > height;
         return (
@@ -56,7 +66,7 @@ class HomeScreen extends React.Component {
                         <ProfitChart/>
                         <Line/>
                         <Text>Stocks</Text>
-                        <ListStock stocks={this.props.allStocks}/>
+                        <ListStock titles={["Symbol", "Price", "Yield"]} stocks={this.props.allStocks} renderItem={this.renderItem}/>
                     </View>
                 </ScrollView>
             </View>
