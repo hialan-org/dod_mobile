@@ -36,4 +36,21 @@ export const common = StyleSheet.create({
     scrollView: {
         flexGrow: 1,
     },
+    tableItem: {
+        // backgroundColor: 'white',
+        padding: 20,
+        marginVertical: 8,
+        marginHorizontal: 16,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    tableText: {
+        fontSize: 15,
+        alignSelf: 'flex-start',
+    },
+    tableTitle: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        alignSelf: 'flex-start',
+    },
 });

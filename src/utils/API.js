@@ -36,3 +36,54 @@ export const getTopYieldApi = async (date, range) => {
             throw err;
         });
 }
+
+export const getStockApi = async () => {
+    const getStockApiUrl = `/stocks`;
+    const accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN);
+    let options = {
+        headers: {
+            'Authorization': 'Bearer ' + accessToken,
+        }
+    }
+    return axios.get(API_BASE_URL + getStockApiUrl, options)
+        .then(result => {
+            return result.data;
+        }).catch(err => {
+            console.log(err);
+            throw err;
+        });
+}
+
+export const manageStockApi = async (stock) => {
+    const manageStockApi = `/users/addStock`;
+    const accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN);
+    let options = {
+        headers: {
+            'Authorization': 'Bearer ' + accessToken,
+        }
+    }
+    return axios.post(API_BASE_URL + manageStockApi, stock, options)
+        .then(result => {
+            return result.data;
+        }).catch(err => {
+            console.log(err);
+            throw err;
+        })
+}
+
+export const getOwnedStocks = async () => {
+    const getOwnedStocks = '/users/stocks';
+    const accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN);
+    let options = {
+        headers: {
+            'Authorization': 'Bearer ' + accessToken,
+        }
+    }
+    return axios.get(API_BASE_URL + getOwnedStocks, options)
+        .then(result => {
+            return result.data;
+        }).catch(err => {
+            console.log(err);
+            throw err;
+        })
+}

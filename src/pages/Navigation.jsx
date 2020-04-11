@@ -19,6 +19,7 @@ import DetailsScreen from "./DetailsScreen";
 import EmptyScreen from "./EmptyScreen";
 import Wallet from "./Wallet";
 import Notifications from "./Notifications";
+import BuyStocksScreen from "./BuyStocksScreen";
 
 const isInClient = Constants.default.appOwnership === 'expo';
 // const isInClient = false;
@@ -120,6 +121,7 @@ class Navigation extends React.Component {
                         <Stack.Navigator>
                             <Tab.Screen name="Main" component={MainNavigation}/>
                             <Stack.Screen name="Details" component={DetailsScreen}/>
+                            <Stack.Screen name="BuyStocks" component={BuyStocksScreen}/>
                         </Stack.Navigator>
                     ) : (
                         <Stack.Navigator>

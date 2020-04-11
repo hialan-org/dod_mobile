@@ -1,7 +1,7 @@
 import {
     GET_TOP_YIELD_STOCKS_REQUESTED,
     GET_TOP_YIELD_STOCKS_SUCCESS,
-    GET_TOP_YIELD_STOCKS_FAILED,
+    GET_TOP_YIELD_STOCKS_FAILED, GET_STOCK_FAILED, GET_STOCK_SUCCESS, GET_OWNED_STOCKS_SUCCESS, MANAGE_STOCK_SUCCESS,
 } from "../actions/types";
 import {formatDateString} from "../utils";
 
@@ -48,6 +48,9 @@ const allStocksMock = [{
 const initialState = {
     topStocksByDate: {},
     allStocks: allStocksMock,
+    stocksSymbol: [],
+    myStocks: [],
+    myStocksMap: new Map(),
 }
 
 export default function stockReducer(state = initialState, action) {
@@ -69,11 +72,26 @@ export default function stockReducer(state = initialState, action) {
                     }).slice(0,5)
                 },
             }
-        case GET_TOP_YIELD_STOCKS_FAILED:
+        case GET_STOCK_SUCCESS:
+            return {
+                ...state,
+                stocksSymbol: action.payload.stocks,
+            }
+        case GET_OWNED_STOCKS_SUCCESS:
+            const myStocksMap = new Map();
+            action.payload.map((stock, index) => {
+                myStocksMap.set(stock.stockId, stock);
+            })
+            return {
+                ...state,
+                myStocks: action.payload,
+                myStocksMap: myStocksMap,
+            }
+        case MANAGE_STOCK_SUCCESS:
+            //TODO:
+        default:
             return {
                 ...state,
             }
-        default:
-            return state;
     }
 }
