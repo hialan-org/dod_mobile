@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {ScrollView, SafeAreaView, Dimensions, View} from 'react-native';
-import {Text} from 'react-native-paper';
+import {DataTable, Text} from 'react-native-paper';
 // import { ShareDialog } from 'react-native-fbsdk';
 import {connect} from 'react-redux';
 import {GET_OWNED_STOCKS_REQUESTED} from "../actions/types";
@@ -37,21 +37,25 @@ const DetailsScreen = ({myStocks, myStocksMap, loading, getOwnedStocks}) => {
     };
 
     useEffect(() => {
-        if(!myStocks.length){
-            getOwnedStocks();
-        }
+        getOwnedStocks();
     }, [])
 
     const scrollEnabled = screenHeight > height;
 
     const renderItem = (stock, index) => {
         return (
-            <View style={common.tableItem} key={index}>
-                <Text style={common.tableText}>{stock.symbol}</Text>
-                <Text style={common.tableText}>${stock.buyPrice}</Text>
-                <Text style={common.tableText}>{stock.latestPrice}</Text>
-                <Text style={common.tableText}>{stock.quantity}</Text>
-            </View>
+            // <View style={common.tableItem} key={index}>
+            //     <Text style={common.tableText}>{stock.symbol}</Text>
+            //     <Text style={common.tableText}>${stock.buyPrice}</Text>
+            //     <Text style={common.tableText}>{stock.latestPrice}</Text>
+            //     <Text style={common.tableText}>{stock.quantity}</Text>
+            // </View>
+            <DataTable.Row key={`item-${index}`}>
+                <DataTable.Cell>{stock.symbol}</DataTable.Cell>
+                <DataTable.Cell>${stock.buyPrice}</DataTable.Cell>
+                <DataTable.Cell>${stock.latestPrice}</DataTable.Cell>
+                <DataTable.Cell>{stock.quantity}</DataTable.Cell>
+            </DataTable.Row>
         );
     }
 
@@ -65,6 +69,7 @@ const DetailsScreen = ({myStocks, myStocksMap, loading, getOwnedStocks}) => {
             >
             <Text>Details!</Text>
             <ListStock titles={["Symbol", "Buy Price", "Latest Price", "Quantity"]}
+                       loading={loading}
                        stocks={Array.from(myStocksMap.values())}
             renderItem={renderItem}/>
             </ScrollView>

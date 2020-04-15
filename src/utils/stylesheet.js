@@ -27,6 +27,10 @@ export const common = StyleSheet.create({
     icon: {
         fontSize: 20,
     },
+    iconImage: {
+        width: 20,
+        aspectRatio: 1,
+    },
     row: {
         minHeight: 30,
         flexDirection: 'row',
@@ -38,11 +42,14 @@ export const common = StyleSheet.create({
     },
     tableItem: {
         // backgroundColor: 'white',
-        padding: 20,
+        // padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        // justifyContent: 'space-between',
+        // alignItems: 'flex-start',
+        // alignContent: 'flex-start'
+        display: "flex",
     },
     tableText: {
         fontSize: 15,
@@ -52,5 +59,19 @@ export const common = StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold',
         alignSelf: 'flex-start',
+        width: "30%"
     },
+    button: {
+        alignSelf: 'center',
+        alignItems: 'center',
+        backgroundColor: '#DDDDDD',
+        justifyContent: 'center',
+        width: 200,
+        height: 50,
+        padding: 10,
+        marginTop: 16,
+    },
+    buttonText: {
+
+    }
 });

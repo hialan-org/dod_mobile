@@ -8,6 +8,7 @@ import {Ionicons, Entypo} from '@expo/vector-icons';
 import {common} from "../utils/stylesheet";
 import {ListStock} from "../components/ListStocks";
 import {Line} from "../components/Line";
+import {DataTable} from "react-native-paper";
 
 const { height } = Dimensions.get('window');
 
@@ -26,20 +27,17 @@ class HomeScreen extends React.Component {
         this.props.logout();
     };
 
-    componentDidMount = () => {
-    }
-
     onContentSizeChange = (contentWidth, contentHeight) => {
         this.setState({ screenHeight: contentHeight });
     };
 
     renderItem = (stock, index) => {
         return (
-            <View style={common.tableItem} key={index}>
-                <Text style={common.tableText}>{stock.symbol}</Text>
-                <Text style={common.tableText}>${stock.latestPrice}</Text>
-                <Text style={common.tableText}>{stock.dividendYield}</Text>
-            </View>
+            <DataTable.Row key={`item-${index}`}>
+                <DataTable.Cell>{stock.symbol}</DataTable.Cell>
+                <DataTable.Cell>${stock.latestPrice}</DataTable.Cell>
+                <DataTable.Cell>{stock.dividendYield}</DataTable.Cell>
+            </DataTable.Row>
         );
     }
 

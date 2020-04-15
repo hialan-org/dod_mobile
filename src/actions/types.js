@@ -29,3 +29,7 @@ export const MANAGE_STOCK_FAILED = 'manageStockFailed';
 export const GET_OWNED_STOCKS_REQUESTED = 'getOwnedStocksRequested';
 export const GET_OWNED_STOCKS_SUCCESS = 'getOwnedStocksSuccess';
 export const GET_OWNED_STOCKS_FAILED = 'getOwnedStocksFailed';
+
+export const GET_STOCKS_PRICE_REQUESTED = 'getStocksPriceRequested';
+export const GET_STOCKS_PRICE_SUCCESS = 'getStocksPriceSuccess';
+export const GET_STOCKS_PRICE_FAILED = 'getStocksPriceFailed';

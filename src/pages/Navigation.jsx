@@ -14,12 +14,13 @@ import SettingsScreen from "./SettingsScreen";
 import * as Constants from "expo-constants";
 import * as GoogleSignIn from "expo-google-sign-in";
 import {Platform, View} from "react-native";
-import {LOGIN_REQUESTED, LOGOUT_REQUESTED} from "../actions/types";
+import {LOGIN_REQUESTED, LOGIN_SUCCESS, LOGOUT_REQUESTED} from "../actions/types";
 import DetailsScreen from "./DetailsScreen";
 import EmptyScreen from "./EmptyScreen";
 import Wallet from "./Wallet";
 import Notifications from "./Notifications";
 import BuyStocksScreen from "./BuyStocksScreen";
+import {getUserInSecureStore} from "../utils";
 
 const isInClient = Constants.default.appOwnership === 'expo';
 // const isInClient = false;
@@ -98,12 +99,17 @@ class Navigation extends React.Component {
     }
 
     initAsync = async () => {
-        await GoogleSignIn.initAsync({
-            // You may ommit the clientId when the firebase `googleServicesFile` is configured
-            // clientId: '152090196286-pkjcq0hb22e0s6c89skktrvqscjo1ok5.apps.googleusercontent.com'
-            clientId: clientId
-        });
-        this._syncUserWithStateAsync();
+        const user = await getUserInSecureStore();
+        if(user){
+            this.props.loginExist(user);
+        } else {
+            await GoogleSignIn.initAsync({
+                // You may ommit the clientId when the firebase `googleServicesFile` is configured
+                // clientId: '152090196286-pkjcq0hb22e0s6c89skktrvqscjo1ok5.apps.googleusercontent.com'
+                clientId: clientId
+            });
+            this._syncUserWithStateAsync();
+        }
     };
 
     _syncUserWithStateAsync = async () => {
@@ -144,6 +150,9 @@ const mapDispatchToProps = dispatch => {
         login: (accessCode) => {
             return dispatch({type: LOGIN_REQUESTED, payload: accessCode})
         },
+        loginExist: (user) => {
+            return dispatch({type: LOGIN_SUCCESS, payload: user})
+        }
     })
 }
 

@@ -1,8 +1,11 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import {Text, Button} from "react-native-paper";
 import {connect} from 'react-redux';
 import * as GoogleSignIn from "expo-google-sign-in";
 import {LOGIN_REQUESTED, LOGOUT_REQUESTED} from "../actions/types";
+import {common} from "../utils/stylesheet";
+import {clearSecureStore} from "../utils";
 
 class SettingsScreen extends React.Component {
     constructor(props) {
@@ -11,6 +14,7 @@ class SettingsScreen extends React.Component {
 
     signOutAsync = async () => {
         await GoogleSignIn.signOutAsync();
+        await clearSecureStore();
         this.props.logout();
     };
 
@@ -21,21 +25,21 @@ class SettingsScreen extends React.Component {
                 <Text style={{ marginTop: 50, fontSize: 25 }}>{this.props.user.email}</Text>
                 <View
                     style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <TouchableOpacity
-                        style={styles.button}
+                    <Button
+                        style={common.button}
                         onPress={() => this.props.navigation.navigate('Home')}>
-                        <Text>Go to Home Tab</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
+                        <Text style={common.buttonText}>Go to Home Tab</Text>
+                    </Button>
+                    <Button
+                        style={common.button}
                         onPress={() => this.props.navigation.navigate('Details')}>
-                        <Text>Open Detail Screen</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
+                        <Text style={common.buttonText}>Open Detail Screen</Text>
+                    </Button>
+                    <Button
+                        style={common.button}
                         onPress={() => this.signOutAsync()}>
-                        <Text>Sign Out</Text>
-                    </TouchableOpacity>
+                        <Text style={common.buttonText}>Sign Out</Text>
+                    </Button>
                 </View>
             </View>
         );

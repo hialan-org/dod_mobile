@@ -1,21 +1,30 @@
 import React from 'react';
-import {SafeAreaView, View, FlatList, StyleSheet, Text} from 'react-native';
-import Constants from 'expo-constants';
-import {common} from "../utils/stylesheet";
+import { View, StyleSheet} from 'react-native';
+import { ActivityIndicator, Colors} from "react-native-paper";
+import { DataTable } from 'react-native-paper';
 
-export const ListStock = ({titles, stocks, renderItem}) => {
+export const ListStock = ({titles, stocks, loading, renderItem}) => {
     return (
         <View style={styles.container}>
-            <View style={common.tableItem}>
-                {titles.map((title, index) =>
-                    <Text style={common.tableTitle} key={`title-${index}`}>{title}</Text>
+            <DataTable>
+                <DataTable.Header>
+                    {titles.map((title, index) =>
+                        <DataTable.Title key={`title-${index}`}>{title}</DataTable.Title>
+                    )}
+                </DataTable.Header>
+
+                {loading ? <ActivityIndicator animating={true} color={Colors.red800} /> : (
+                    stocks.length ? stocks.map((stock, index) => {
+                        return (
+                            renderItem(stock, index)
+                        )
+                    }) : (
+                        <DataTable.Row>
+                            <DataTable.Cell>No Data</DataTable.Cell>
+                        </DataTable.Row>
+                    )
                 )}
-            </View>
-            {stocks.map((stock, index) => {
-                return (
-                    renderItem(stock, index)
-                )
-            })}
+            </DataTable>
         </View>
     );
 }

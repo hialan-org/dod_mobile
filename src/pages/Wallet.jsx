@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {Dimensions, SafeAreaView, View, ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
-import {Text, TextInput, RadioButton, Subheading} from 'react-native-paper';
+import {Dimensions, SafeAreaView, View, ScrollView, StyleSheet} from 'react-native';
+import {Text, TextInput, RadioButton, Subheading, Button, DataTable} from 'react-native-paper';
 import {common} from "../utils/stylesheet";
 import {Line} from "../components/Line";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -13,7 +13,7 @@ const {height} = Dimensions.get('window');
 let yesterday = new Date();
 yesterday.setDate(yesterday.getDate() - 1);
 
-const Wallet = ({getDoDStocks, topStocksByDate, navigation}) => {
+const Wallet = ({loading, topStocksByDate, navigation, getDoDStocks,}) => {
 // class Wallet extends React.Component {
     const [money, setMoney] = useState("");
     const [checked, setChecked] = useState("dod");
@@ -46,11 +46,11 @@ const Wallet = ({getDoDStocks, topStocksByDate, navigation}) => {
 
     const renderItem = (stock, index) => {
         return (
-            <View style={common.tableItem} key={index}>
-                <Text style={common.tableText}>{stock.symbol}</Text>
-                <Text style={common.tableText}>${stock.latestPrice}</Text>
-                <Text style={common.tableText}>{stock.dividendYield}</Text>
-            </View>
+            <DataTable.Row key={`item-${index}`}>
+                <DataTable.Cell>{stock.symbol}</DataTable.Cell>
+                <DataTable.Cell>${stock.latestPrice}</DataTable.Cell>
+                <DataTable.Cell>{stock.dividendYield}</DataTable.Cell>
+            </DataTable.Row>
         );
     }
 
@@ -93,11 +93,11 @@ const Wallet = ({getDoDStocks, topStocksByDate, navigation}) => {
                     </View>
                     <Text>{date.toDateString()}</Text>
                     <View>
-                        <TouchableOpacity
-                            style={styles.button}
+                        <Button
+                            style={common.button}
                             onPress={() => showDatepicker()}>
-                            <Text>Show date picker</Text>
-                        </TouchableOpacity>
+                            <Text style={common.buttonText}>Change date</Text>
+                        </Button>
                     </View>
                     {show && (
                         <DateTimePicker
@@ -111,24 +111,28 @@ const Wallet = ({getDoDStocks, topStocksByDate, navigation}) => {
                             onChange={onChange}
                         />
                     )}
-                    <TouchableOpacity
-                        style={styles.button}
+                    <Button
+                        style={common.button}
+                        loading={loading}
                         onPress={() => {
                             onPressSuggest()
                         }}>
-                        <Text>Suggest</Text>
-                    </TouchableOpacity>
+                        <Text style={common.buttonText}>Suggest</Text>
+                    </Button>
+                    {topStocksByDate[formatDateString(date)] && (<ListStock titles={["Symbol", "Price", "Yield"]}
+                                         loading={loading}
+                                         stocks={topStocksByDate[formatDateString(date)]
+                                             ? topStocksByDate[formatDateString(date)]
+                                             : []}
+                                         renderItem={renderItem}
+                            />
+                    )}
 
-                    <ListStock titles={["Symbol", "Price", "Yield"]}
-                               stocks={topStocksByDate[formatDateString(date)]
-                                   ? topStocksByDate[formatDateString(date)]
-                                   : []}
-                    renderItem={renderItem}/>
-                    <TouchableOpacity
-                        style={styles.button}
+                    <Button
+                        style={common.button}
                         onPress={() => navigation.navigate('BuyStocks')}>
-                        <Text>Buy Stocks</Text>
-                    </TouchableOpacity>
+                        <Text style={common.buttonText}>Buy Stocks</Text>
+                    </Button>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -140,7 +144,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         alignItems: 'center',
         backgroundColor: '#DDDDDD',
+        justifyContent: 'center',
         width: 200,
+        height: 50,
         padding: 10,
         marginTop: 16,
     },
@@ -149,7 +155,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         topStocksByDate: state.stock.topStocksByDate,
-        allStocks: state.stock.allStocks,
+        loading: state.loading,
     }
 }
 

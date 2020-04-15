@@ -4,10 +4,8 @@ import {Text, TextInput, Button, ToggleButton} from 'react-native-paper';
 import {common} from "../utils/stylesheet";
 import {connect} from 'react-redux';
 import {GET_STOCK_REQUESTED, MANAGE_STOCK_REQUESTED} from "../actions/types";
-import TouchableOpacity from "react-native-web/dist/exports/TouchableOpacity";
 
 const BuyStocksScreen = ({stocksSymbol, loading, getStocksSymbol, manageStock}) => {
-    const [listStocks, setListStocks] = useState([]);
     const [selectedStock, setSelectedStock] = useState(-1);
     const [price, setPrice] = useState("");
     const [quantity, setQuantity] = useState("");

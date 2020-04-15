@@ -13,9 +13,9 @@ import {
     MANAGE_STOCK_REQUESTED,
     GET_OWNED_STOCKS_REQUESTED,
     GET_OWNED_STOCKS_FAILED,
-    GET_OWNED_STOCKS_SUCCESS,
+    GET_OWNED_STOCKS_SUCCESS, GET_STOCKS_PRICE_REQUESTED, GET_STOCKS_PRICE_FAILED,
 } from "../actions/types";
-import {getOwnedStocks, getStockApi, getTopYieldApi, manageStockApi} from "../utils/API";
+import {getOwnedStocksApi, getStockApi, getTopYieldApi, manageStockApi} from "../utils/API";
 import {formatDateString} from "../utils";
 
 function* getTopYieldStocksWorker(action) {
@@ -73,7 +73,7 @@ function* manageStockWatcher() {
 
 function* getOwnedStocksWorker(action) {
     try {
-        const stocks = yield call(getOwnedStocks);
+        const stocks = yield call(getOwnedStocksApi);
         yield put({
             type: GET_OWNED_STOCKS_SUCCESS,
             payload: stocks,
@@ -89,6 +89,22 @@ function* getOwnedStocksWorker(action) {
 
 function* getOwnedStocksWatcher() {
     yield takeEvery(GET_OWNED_STOCKS_REQUESTED, getOwnedStocksWorker)
+}
+
+function* getStocksPriceWorker(action) {
+    try{
+
+    } catch(e){
+        alert(e);
+        yield put({
+            type: GET_STOCKS_PRICE_FAILED,
+            payload: e,
+        })
+    }
+}
+
+function* getStocksPriceWatcher() {
+    yield takeEvery(GET_STOCKS_PRICE_REQUESTED)
 }
 
 export function* stockSaga() {
