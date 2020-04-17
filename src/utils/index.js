@@ -6,7 +6,7 @@ export const formatDateString = (date) => {
 }
 
 export const getUserInSecureStore = async() => {
-    console.log("Check SecureStore");
+    // console.log("Check SecureStore");
     const accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN);
     const email = await SecureStore.getItemAsync(EMAIL);
     const role = await SecureStore.getItemAsync(ROLE);

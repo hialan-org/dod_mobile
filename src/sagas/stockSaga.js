@@ -54,9 +54,9 @@ function* getStockWatcher() {
 function* manageStockWorker(action) {
     try {
         const result = yield call(manageStockApi, action.payload);
-        console.log(result);
         yield put({
             type: MANAGE_STOCK_SUCCESS,
+            payload: result,
         })
     } catch (e){
         alert("Error: " + e);
@@ -93,7 +93,7 @@ function* getOwnedStocksWatcher() {
 
 function* getStocksPriceWorker(action) {
     try{
-
+        //TODO:
     } catch(e){
         alert(e);
         yield put({
@@ -104,7 +104,7 @@ function* getStocksPriceWorker(action) {
 }
 
 function* getStocksPriceWatcher() {
-    yield takeEvery(GET_STOCKS_PRICE_REQUESTED)
+    yield takeEvery(GET_STOCKS_PRICE_REQUESTED, getStocksPriceWorker)
 }
 
 export function* stockSaga() {
@@ -113,5 +113,6 @@ export function* stockSaga() {
         getTopYieldWatcher(),
         manageStockWatcher(),
         getOwnedStocksWatcher(),
+        getStocksPriceWatcher(),
     ])
 }

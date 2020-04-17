@@ -37,19 +37,13 @@ const DetailsScreen = ({myStocks, myStocksMap, loading, getOwnedStocks}) => {
     };
 
     useEffect(() => {
-        getOwnedStocks();
+        myStocksMap == null && getOwnedStocks();
     }, [])
 
     const scrollEnabled = screenHeight > height;
 
     const renderItem = (stock, index) => {
         return (
-            // <View style={common.tableItem} key={index}>
-            //     <Text style={common.tableText}>{stock.symbol}</Text>
-            //     <Text style={common.tableText}>${stock.buyPrice}</Text>
-            //     <Text style={common.tableText}>{stock.latestPrice}</Text>
-            //     <Text style={common.tableText}>{stock.quantity}</Text>
-            // </View>
             <DataTable.Row key={`item-${index}`}>
                 <DataTable.Cell>{stock.symbol}</DataTable.Cell>
                 <DataTable.Cell>${stock.buyPrice}</DataTable.Cell>
@@ -79,9 +73,8 @@ const DetailsScreen = ({myStocks, myStocksMap, loading, getOwnedStocks}) => {
 
 const mapStateToProps = state => {
     return {
-        myStocks: state.stock.myStocks,
         myStocksMap: state.stock.myStocksMap,
-        loading: state.loading,
+        loading: state.loading.general,
     }
 }
 

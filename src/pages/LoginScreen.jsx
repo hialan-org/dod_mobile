@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         user: state.user,
-        loading: state.loading,
+        loading: state.loading.general,
     }
 }
 

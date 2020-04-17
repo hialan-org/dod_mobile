@@ -17,7 +17,7 @@ import {Platform, View} from "react-native";
 import {LOGIN_REQUESTED, LOGIN_SUCCESS, LOGOUT_REQUESTED} from "../actions/types";
 import DetailsScreen from "./DetailsScreen";
 import EmptyScreen from "./EmptyScreen";
-import Wallet from "./Wallet";
+import WalletScreen from "./WalletScreen";
 import Notifications from "./Notifications";
 import BuyStocksScreen from "./BuyStocksScreen";
 import {getUserInSecureStore} from "../utils";
@@ -63,10 +63,10 @@ function MainNavigation() {
                 }}
             />
             <Tab.Screen
-                name="Wallet"
-                component={Wallet}
+                name="WalletScreen"
+                component={WalletScreen}
                 options={{
-                    tabBarLabel: 'Wallet',
+                    tabBarLabel: 'WalletScreen',
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="wallet" color={color} size={size} />
                     ),
@@ -91,6 +91,9 @@ function MainNavigation() {
                 }}/>
         </Tab.Navigator>
     );
+}
+MainNavigation.navigationOptions={
+    headerShow: false,
 }
 
 class Navigation extends React.Component {
@@ -125,7 +128,7 @@ class Navigation extends React.Component {
                 <NavigationContainer>
                     {this.props.user && this.props.user.accessToken ? (
                         <Stack.Navigator>
-                            <Tab.Screen name="Main" component={MainNavigation}/>
+                            <Stack.Screen options={{ headerShown: false }} name="Main" component={MainNavigation}/>
                             <Stack.Screen name="Details" component={DetailsScreen}/>
                             <Stack.Screen name="BuyStocks" component={BuyStocksScreen}/>
                         </Stack.Navigator>

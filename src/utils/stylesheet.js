@@ -26,6 +26,7 @@ export const common = StyleSheet.create({
     },
     icon: {
         fontSize: 20,
+        color: 'grey'
     },
     iconImage: {
         width: 20,
@@ -73,5 +74,8 @@ export const common = StyleSheet.create({
     },
     buttonText: {
 
-    }
+    },
+    spaceBetween: {
+      justifyContent: 'space-between',
+    },
 });

@@ -10,7 +10,7 @@ import {ListStock} from "../components/ListStocks";
 import {Line} from "../components/Line";
 import {DataTable} from "react-native-paper";
 
-const { height } = Dimensions.get('window');
+// const { height } = Dimensions.get('window');
 
 // function HomeScreen({navigation, logout, profit}) {
 class HomeScreen extends React.Component {
@@ -18,18 +18,18 @@ class HomeScreen extends React.Component {
         super(props);
     }
 
-    state = {
-        screenHeight: height,
-    };
+    // state = {
+    //     screenHeight: height,
+    // };
 
     signOutAsync = async () => {
         await GoogleSignIn.signOutAsync();
         this.props.logout();
     };
 
-    onContentSizeChange = (contentWidth, contentHeight) => {
-        this.setState({ screenHeight: contentHeight });
-    };
+    // onContentSizeChange = (contentWidth, contentHeight) => {
+    //     this.setState({ screenHeight: contentHeight });
+    // };
 
     renderItem = (stock, index) => {
         return (
@@ -42,18 +42,19 @@ class HomeScreen extends React.Component {
     }
 
     render() {
-        const scrollEnabled = this.state.screenHeight > height;
+        // const scrollEnabled = this.state.screenHeight > height;
         return (
             <View style={common.containerWrapper}>
                 <StatusBar barStyle="light-content" backgroundColor="#468189"/>
                 <ScrollView
                     style={{flex: 1}}
                     contentContainerStyle={common.scrollView}
-                    scrollEnabled={scrollEnabled}
-                    onContentSizeChange={this.onContentSizeChange}
+                    scrollEnabled={true}
+                    // scrollEnabled={scrollEnabled}
+                    // onContentSizeChange={this.onContentSizeChange}
                 >
                     <View style={common.container}>
-                        <Text style={common.title}>Investing</Text>
+                        <Text style={common.title}>Investing!!!</Text>
                         <Text
                             style={[styles.profit, this.props.profit >= 0 ? styles.positiveProfit : styles.negativeProfit]}>
                             {this.props.profit >= 0 ?

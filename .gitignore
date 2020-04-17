@@ -409,3 +409,6 @@ tmp/
 temp/
 
 # End of https://www.gitignore.io/api/react,intellij,reactnative
+ReactNativeWorkspace.code-workspace
+package-lock.json
+.vscode/launch.json

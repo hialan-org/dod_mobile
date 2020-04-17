@@ -46,11 +46,10 @@ const allStocksMock = [{
 
 
 const initialState = {
-    topStocksByDate: {},
+    topStocksByDate: null,
     allStocks: allStocksMock,
-    stocksSymbol: [],
-    myStocks: [],
-    myStocksMap: new Map(),
+    stocksSymbol: null,
+    myStocksMap: null,
 }
 
 export default function stockReducer(state = initialState, action) {
@@ -60,16 +59,11 @@ export default function stockReducer(state = initialState, action) {
                 ...state,
             };
         case GET_TOP_YIELD_STOCKS_SUCCESS:
-            action.payload.stocks.sort((s1, s2) =>{
-                return s2.dividendYield - s1.dividendYield;
-            }).slice(0,5)
             return {
                 ...state,
                 topStocksByDate: {
                     ...state.topStocksByDate,
-                    [formatDateString(action.payload.date)]: action.payload.stocks.sort((s1, s2) =>{
-                        return s2.dividendYield - s1.dividendYield;
-                    }).slice(0,5)
+                    [formatDateString(action.payload.date)]: action.payload.stocks,
                 },
             }
         case GET_STOCK_SUCCESS:
@@ -84,11 +78,37 @@ export default function stockReducer(state = initialState, action) {
             })
             return {
                 ...state,
-                myStocks: action.payload,
                 myStocksMap: myStocksMap,
             }
         case MANAGE_STOCK_SUCCESS:
             //TODO:
+            action.payload.map((ownedStock, index) => {
+                let tmpStock = state.myStocksMap.get(ownedStock.stockId);
+                if(tmpStock){
+                    if(ownedStock.stockQuantity == 0){
+                        state.myStocksMap.delete(ownedStock.stockId);
+                    } else {
+                        tmpStock = {
+                            ...tmpStock,
+                            buyPrice: ownedStock.stockAveragePrice,
+                            quantity: ownedStock.stockQuantity,
+                        }
+                        state.myStocksMap.set(ownedStock.stockId, tmpStock);
+                    }
+                } else {
+                    tmpStock = {
+                        buyPrice: ownedStock.stockAveragePrice,
+                        latestPrice: ownedStock.latestPrice,
+                        quantity: ownedStock.stockQuantity,
+                        stockId: ownedStock.stockId,
+                        symbol: ownedStock.symbol,
+                    }
+                    state.myStocksMap.set(tmpStock.stockId, tmpStock);
+                }
+            });
+            return {
+                ...state,
+            }
         default:
             return {
                 ...state,

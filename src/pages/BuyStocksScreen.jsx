@@ -5,27 +5,33 @@ import {common} from "../utils/stylesheet";
 import {connect} from 'react-redux';
 import {GET_STOCK_REQUESTED, MANAGE_STOCK_REQUESTED} from "../actions/types";
 
-const BuyStocksScreen = ({stocksSymbol, loading, getStocksSymbol, manageStock}) => {
+const BuyStocksScreen = ({stocksSymbol, myStocksMap, loading, getStocksSymbol, manageStock}) => {
     const [selectedStock, setSelectedStock] = useState(-1);
     const [price, setPrice] = useState("");
     const [quantity, setQuantity] = useState("");
     const [isBuy, setIsBuy] = useState('buy');
 
     useEffect(() => {
-        if(!stocksSymbol.length){
-            console.log("Component did mount")
-            getStocksSymbol();
-        }
+        !stocksSymbol && getStocksSymbol();
     }, []);
 
     const onPressAccepted = () => {
         const stock = {
             stockId: selectedStock,
-            stockPrice: parseInt(price),
+            stockPrice: parseFloat(price),
             stockQuantity: parseInt(quantity),
             isBuy: isBuy === 'buy',
         }
-        manageStock(stock);
+        if(isBuy==='buy'){
+            manageStock(stock);
+        } else { //If sell, check if user has enough stocks
+            const ownedStock = myStocksMap.get(selectedStock);
+            if(ownedStock && ownedStock.quantity >= parseInt(quantity)){
+                manageStock(stock);
+            } else {
+                alert("You don't have enough stocks");
+            }
+        }
     }
 
     return (
@@ -43,7 +49,7 @@ const BuyStocksScreen = ({stocksSymbol, loading, getStocksSymbol, manageStock}) 
                             }}
                             style={{ width: 150 }}
                         >
-                            {stocksSymbol.map((stock, index) => {
+                            {stocksSymbol && stocksSymbol.map((stock, index) => {
                                 return (
                                     <Picker.Item label={stock.symbol} value={stock.stockId} key={stock.stockId}/>
                                 )
@@ -68,12 +74,12 @@ const BuyStocksScreen = ({stocksSymbol, loading, getStocksSymbol, manageStock}) 
                 </View>
             </View>
             <View style={{padding: 10}}>
-                <TextInput
+                {isBuy === "buy" && <TextInput
                     label='Price'
                     value={price}
                     onChangeText={text => setPrice(text)}
                     keyboardType='decimal-pad'
-                />
+                />}
                 <TextInput
                     label='Quantity'
                     value={quantity}
@@ -90,7 +96,8 @@ const BuyStocksScreen = ({stocksSymbol, loading, getStocksSymbol, manageStock}) 
 const mapStateToProps = state => {
     return {
         stocksSymbol: state.stock.stocksSymbol,
-        loading: state.loading,
+        myStocksMap: state.stock.myStocksMap,
+        loading: state.loading.general,
     }
 }
 
