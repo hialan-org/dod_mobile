@@ -89,7 +89,7 @@ export const getOwnedStocksApi = async () => {
 }
 
 export const getStocksPriceByDateApi = async (date) => {
-    const getDodApiUrl = `/stock-history/${date}`;
+    const getDodApiUrl = `/stocks/stock-history/${date}`;
     const accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN);
     let options = {
         headers: {
@@ -98,7 +98,7 @@ export const getStocksPriceByDateApi = async (date) => {
     }
     return axios.get(API_BASE_URL + getDodApiUrl, options)
         .then(result => {
-            return result.data;
+            return result.data.body.stocksHistory;
         }).catch(err => {
             console.log(err);
             throw err;

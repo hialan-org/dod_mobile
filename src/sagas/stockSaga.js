@@ -13,9 +13,9 @@ import {
     MANAGE_STOCK_REQUESTED,
     GET_OWNED_STOCKS_REQUESTED,
     GET_OWNED_STOCKS_FAILED,
-    GET_OWNED_STOCKS_SUCCESS, GET_STOCKS_PRICE_REQUESTED, GET_STOCKS_PRICE_FAILED,
+    GET_OWNED_STOCKS_SUCCESS, GET_STOCKS_PRICE_REQUESTED, GET_STOCKS_PRICE_FAILED, GET_STOCKS_PRICE_SUCCESS,
 } from "../actions/types";
-import {getOwnedStocksApi, getStockApi, getTopYieldApi, manageStockApi} from "../utils/API";
+import {getOwnedStocksApi, getStockApi, getStocksPriceByDateApi, getTopYieldApi, manageStockApi} from "../utils/API";
 import {formatDateString} from "../utils";
 
 function* getTopYieldStocksWorker(action) {
@@ -93,7 +93,13 @@ function* getOwnedStocksWatcher() {
 
 function* getStocksPriceWorker(action) {
     try{
-        //TODO:
+        const result = yield call(getStocksPriceByDateApi, formatDateString(action.payload.date))
+        yield put({
+            type: GET_STOCKS_PRICE_SUCCESS,
+            payload: {
+                stocks: result,
+            }
+        })
     } catch(e){
         alert(e);
         yield put({

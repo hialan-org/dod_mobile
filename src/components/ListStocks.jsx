@@ -14,7 +14,7 @@ export const ListStock = ({titles, stocks, loading, renderItem}) => {
                 </DataTable.Header>
 
                 {loading ? <ActivityIndicator animating={true} color={Colors.red800} /> : (
-                    stocks.length ? stocks.map((stock, index) => {
+                    (stocks && stocks.length) ? stocks.map((stock, index) => {
                         return (
                             renderItem(stock, index)
                         )

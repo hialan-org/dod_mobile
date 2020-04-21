@@ -21,6 +21,7 @@ import WalletScreen from "./WalletScreen";
 import Notifications from "./Notifications";
 import BuyStocksScreen from "./BuyStocksScreen";
 import {getUserInSecureStore} from "../utils";
+import {translate} from "../i18n";
 
 const isInClient = Constants.default.appOwnership === 'expo';
 // const isInClient = false;
@@ -56,7 +57,7 @@ function MainNavigation() {
                 name="Home"
                 component={HomeScreen}
                 options={{
-                    tabBarLabel: 'Home',
+                    tabBarLabel: "Home",
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="home" color={color} size={size} />
                     ),

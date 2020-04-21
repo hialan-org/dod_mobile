@@ -4,16 +4,19 @@ import {Text, TextInput, RadioButton, Subheading, Button, DataTable} from 'react
 import {common} from "../utils/stylesheet";
 import {Line} from "../components/Line";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {GET_OWNED_STOCKS_REQUESTED, GET_TOP_YIELD_STOCKS_REQUESTED, LOGOUT_REQUESTED} from "../actions/types";
+import {GET_OWNED_STOCKS_REQUESTED, GET_TOP_YIELD_STOCKS_REQUESTED} from "../actions/types";
 import {connect} from 'react-redux';
 import {ListStock} from "../components/ListStocks";
-import {formatDateString} from "../utils";
+import {formatDateString, isWeekend} from "../utils";
 import {MaterialIcons} from "@expo/vector-icons";
 
 const {height} = Dimensions.get('window');
 
 let yesterday = new Date();
 yesterday.setDate(yesterday.getDate() - 1);
+while(isWeekend(yesterday)){
+    yesterday.setDate(yesterday.getDate()-1);
+}
 
 const WalletScreen = ({
                           getTopYieldLoading, getOwnedStocksLoading, topStocksByDate, myStocksMap, navigation,
@@ -34,8 +37,14 @@ const WalletScreen = ({
     // };
 
     const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'ios');
+        let currentDate = date
+        if(isWeekend(selectedDate)){
+            alert("Please choose weekdays only");
+            setShow(false);
+        } else {
+            currentDate = selectedDate || date;
+            setShow(Platform.OS === 'ios');
+        }
         setDate(currentDate);
     };
 

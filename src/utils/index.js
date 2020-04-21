@@ -25,3 +25,10 @@ export const clearSecureStore = async() => {
     await SecureStore.deleteItemAsync(EMAIL);
     await SecureStore.deleteItemAsync(ROLE);
 }
+
+export const isWeekend = (date) => {
+    if(date.getDay() === 6 || date.getDay()==0) {
+        return true;
+    }
+    return false;
+}
