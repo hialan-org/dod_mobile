@@ -68,11 +68,6 @@ function HomeScreen({
                                loading={getOwnedStocksLoading}
                                stocks={myStocksMap ? Array.from(myStocksMap.values()) : []}
                                renderItem={renderMyStocks}/>
-                    {/*<ListStock*/}
-                    {/*    titles={["Symbol", "Price", "Yield"]}*/}
-                    {/*    stocks={stocksPrice}*/}
-                    {/*    renderItem={renderItem}*/}
-                    {/*    loading={getStocksHistoryLoading}/>*/}
                 </View>
             </ScrollView>
         </View>

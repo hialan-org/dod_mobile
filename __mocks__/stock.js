@@ -9,9 +9,29 @@ const stocksSymbol = [{
     stockId: 3,
 }];
 
+const stocksPrice = [{
+    stock : {
+        symbol: "AAPL",
+    },
+    latestPrice: 45,
+    dividendYield: 0.001,
+}, {
+    stock : {
+        symbol: "AMZN",
+    },
+    latestPrice: 50,
+    dividendYield: 0.002,
+}, {
+    stock : {
+        symbol: "MSN",
+    },
+    latestPrice: 55,
+    dividendYield: 0.003,
+}]
+
 export const stock = {
     topStocksByDate: null,
-    stocksPrice: null,
+    stocksPrice: stocksPrice,
     stocksSymbol: stocksSymbol,
     myStocksMap: null,
 }

@@ -17,11 +17,6 @@ class LoginScreen extends React.Component {
         super(props);
     }
 
-    // state = { user: null };
-
-    componentDidMount() {
-    }
-
     signInAsync = async () => {
         try {
             await GoogleSignIn.askForPlayServicesAsync();

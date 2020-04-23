@@ -55,7 +55,8 @@ const ProfitChart = ({loadingGetProfit, profit}) => {
     return (
         <>
             {loadingGetProfit
-                ? <ActivityIndicator animating={true}/> : <LineChartWithTooltips
+                ? <ActivityIndicator animating={true}/>
+                : <LineChartWithTooltips
                     data={data}
                     width={screenWidth} // from react-native
                     height={250}

@@ -9,9 +9,6 @@ const googleIcon = {
 };
 
 export default class GoogleSignInButton extends React.PureComponent {
-    static defaultProps = {
-        onPress() {},
-    };
     render() {
         const { children, style, ...props } = this.props;
         return (

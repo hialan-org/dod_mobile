@@ -72,7 +72,7 @@ const StocksScreen = ({
                             onChange={onChange}
                         />
                     )}
-                            <ListStock titles={["Symbol", "Price", "Yield", "Quantity"]}
+                            <ListStock titles={["Symbol", "Price", "Yield"]}
                                        loading={getStocksHistoryLoading}
                                        stocks={stocksPrice}
                                        renderItem={renderStocksPrice}

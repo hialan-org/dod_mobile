@@ -2,14 +2,14 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store'
-import BuyStocksScreen from "../src/pages/BuyStocksScreen";
+import BuyStocksScreen from "../../src/pages/BuyStocksScreen";
 import {Picker} from "react-native";
-import {stock} from "../__mocks__/stock";
+import {stock} from "../../__mocks__/stock";
 import {ToggleButton, TextInput, Button} from "react-native-paper";
 
 const mockStore = configureStore([]);
 
-describe('<BuyStocksScreen />', () => {
+describe.skip('<BuyStocksScreen />', () => {
     let store;
     let component;
     beforeEach(() => {
@@ -27,11 +27,10 @@ describe('<BuyStocksScreen />', () => {
             </Provider>
         );
     });
-    it.skip('Test snapshot', () => {
+    it('Test snapshot', () => {
         expect(component.toJSON()).toMatchSnapshot();
     });
-    it.skip('Test picker', () => {
-        console.log(component.root.findByType(Picker).props.selectedValue)
+    it('Test picker', () => {
         const pickerItems = component.root.findByType(Picker).props.children;
         expect(pickerItems.length).toEqual(stock.stocksSymbol.length);
         expect(component.root.findByType(Picker).props.selectedValue)
