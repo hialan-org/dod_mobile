@@ -5,9 +5,7 @@ import * as AppAuth from 'expo-app-auth';
 import {connect} from 'react-redux';
 import * as GoogleSignIn from 'expo-google-sign-in';
 import {LOGIN_REQUESTED, LOGOUT_REQUESTED} from "../actions/types";
-import GoogleProfile from "../components/GoogleProfile";
-import Spinner from "react-native-loading-spinner-overlay";
-import { Facebook } from 'react-content-loader/native'
+import {Facebook} from 'react-content-loader/native'
 
 const Loader = () => <Facebook backgroundColor="rgba(204, 204, 204,0.06)"/>
 
@@ -24,11 +22,6 @@ class LoginScreen extends React.Component {
     componentDidMount() {
     }
 
-    signOutAsync = async () => {
-        await GoogleSignIn.signOutAsync();
-        this.props.logout();
-    };
-
     signInAsync = async () => {
         try {
             await GoogleSignIn.askForPlayServicesAsync();
@@ -44,11 +37,7 @@ class LoginScreen extends React.Component {
     };
 
     onPress = () => {
-        if (this.props.user.accessToken) {
-            this.signOutAsync();
-        } else {
-            this.signInAsync();
-        }
+        this.signInAsync();
     };
 
     get buttonTitle() {
@@ -64,23 +53,17 @@ class LoginScreen extends React.Component {
 
         return (
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <>
-                        {/*<Spinner*/}
-                        {/*    visible={this.props.loading}*/}
-                        {/*    textContent={'Loading...'}*/}
-                        {/*    textStyle={styles.spinnerTextStyle}*/}
-                        {/*/>*/}
-                        {this.props.loading ? Loader() : (
-                                <>
-                                    <Text>Dog of The Dow</Text>
-                                    <GoogleSignInButton onPress={this.onPress}>
-                                    {this.buttonTitle}
-                                    </GoogleSignInButton>
-                                    <Text>AppAuth: {JSON.stringify(scheme, null, 2)}</Text>
-                                </>
-                            )}
-                        {/*{this.props.user && <GoogleProfile {...this.props.user} />}*/}
-                    </>
+                <>
+                    {this.props.loading ? Loader() : (
+                        <>
+                            <Text>Dog of The Dow</Text>
+                            <GoogleSignInButton onPress={this.onPress}>
+                                {this.buttonTitle}
+                            </GoogleSignInButton>
+                            <Text>AppAuth: {JSON.stringify(scheme, null, 2)}</Text>
+                        </>
+                    )}
+                </>
             </View>
         )
     }
@@ -104,7 +87,6 @@ const mapDispatchToProps = dispatch => {
         login: (accessCode) => {
             return dispatch({type: LOGIN_REQUESTED, payload: accessCode})
         },
-        logout: () => dispatch({type: LOGOUT_REQUESTED}),
     })
 }
 

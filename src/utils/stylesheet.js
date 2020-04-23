@@ -1,4 +1,5 @@
 import {StyleSheet} from "react-native";
+import {DefaultTheme} from "react-native-paper";
 
 export const common = StyleSheet.create({
     containerWrapper: {
@@ -25,7 +26,7 @@ export const common = StyleSheet.create({
         fontSize: 20,
     },
     icon: {
-        fontSize: 20,
+        fontSize: 30,
         color: 'grey'
     },
     iconImage: {
@@ -79,3 +80,14 @@ export const common = StyleSheet.create({
       justifyContent: 'space-between',
     },
 });
+
+export const theme = {
+    ...DefaultTheme,
+    roundness: 2,
+    // colors: {
+    //     ...DefaultTheme.colors,
+    //     primary: '#3498db',
+    //     accent: '#f1c40f',
+    // },
+    // dark: true,
+};

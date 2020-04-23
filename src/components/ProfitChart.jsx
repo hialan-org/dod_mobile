@@ -3,50 +3,59 @@ import {Dimensions, StyleSheet} from "react-native";
 import {
     LineChart,
 } from 'react-native-chart-kit';
+import {connect} from 'react-redux';
+import {timestampToDate} from "../utils";
+import {ActivityIndicator} from "react-native-paper";
+import LineChartWithTooltips from "./LineChart";
 
-const chartConfig = {
-    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-    strokeWidth: 2, // optional, default 3
-};
-
-const screenWidth = Dimensions.get("window").width-20;
-
-const data = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [{
-            data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100
-            ]
-        },
-        {
-            data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100
-            ]
+const ProfitChart = ({loadingGetProfit, profit}) => {
+    const formatYAxis = (value) => {
+        if(value/1000000>1){
+            return value/1000000 + 'm';
         }
-    ]
-};
-
-class ProfitChart extends React.Component {
-    constructor(props) {
-        super(props);
+        if(value/1000>1){
+            return value/1000 + 'k';
+        }
+        return value;
     }
 
-    render() {
-        return (
-            <>
-                <LineChart
+    const chartConfig = {
+        decimalPlaces: 0, // optional, defaults to 2dp
+        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+        strokeWidth: 2, // optional, default 3
+        propsForLabels: {
+            fontSize: "10"
+        }
+    };
+
+    const screenWidth = Dimensions.get("window").width - 20;
+    let labels = ["January", "February", "March", "April", "May", "June", "July"];
+    let data1 = [Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100,
+        Math.random() * 100, Math.random() * 100, Math.random() * 100];
+    let data2 = [Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100,
+        Math.random() * 100, Math.random() * 100, Math.random() * 100];
+
+    if (profit && profit.length > 0) {
+        //date, totalAmount, investedAMount
+        labels = profit.map(profit => timestampToDate(profit.date));
+        // labels = profit.map(profit => profit.date);
+        data1 = profit.map(profit => profit.totalAmount);
+        data2 = profit.map(profit => profit.investedAmount);
+    }
+
+    const data = {
+        labels: labels,
+        datasets: [{
+            data: data1,
+        }, {
+            data: data2,
+        }]
+    };
+
+    return (
+        <>
+            {loadingGetProfit
+                ? <ActivityIndicator animating={true}/> : <LineChartWithTooltips
                     data={data}
                     width={screenWidth} // from react-native
                     height={250}
@@ -58,10 +67,21 @@ class ProfitChart extends React.Component {
                         marginVertical: 8,
                         borderRadius: 16
                     }}
-                />
-            </>
-        )
+                    formatYLabel={value => {
+                        return formatYAxis(value);
+                    }}
+                    verticalLabelRotation={30}
+                    segments={6}
+                />}
+        </>
+    )
+}
+
+const mapStateToProps = state => {
+    return {
+        profit: state.stat.profitByDate,
+        loadingGetProfit: state.loading.getProfit,
     }
 }
 
-export default ProfitChart
+export default connect(mapStateToProps, null)(ProfitChart);

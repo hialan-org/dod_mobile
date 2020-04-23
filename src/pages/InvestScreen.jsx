@@ -7,34 +7,20 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {GET_OWNED_STOCKS_REQUESTED, GET_TOP_YIELD_STOCKS_REQUESTED} from "../actions/types";
 import {connect} from 'react-redux';
 import {ListStock} from "../components/ListStocks";
-import {formatDateString, isWeekend} from "../utils";
+import {formatDateString, getYesterday, isWeekend} from "../utils";
 import {MaterialIcons} from "@expo/vector-icons";
 
 const {height} = Dimensions.get('window');
 
-let yesterday = new Date();
-yesterday.setDate(yesterday.getDate() - 1);
-while(isWeekend(yesterday)){
-    yesterday.setDate(yesterday.getDate()-1);
-}
-
-const WalletScreen = ({
-                          getTopYieldLoading, getOwnedStocksLoading, topStocksByDate, myStocksMap, navigation,
+const InvestScreen = ({
+                          getTopYieldLoading, topStocksByDate, navigation,
                           getDoDStocks, getOwnedStocks
                       }) => {
-// class WalletScreen extends React.Component {
     const [money, setMoney] = useState("");
     const [checked, setChecked] = useState("dod");
-    const [screenHeight, setScreenHeight] = useState(height);
 
-    const [mode, setMode] = useState('date');
-    const [date, setDate] = useState(yesterday);
+    const [date, setDate] = useState(getYesterday());
     const [show, setShow] = useState(false);
-
-    // const onContentSizeChange = (contentWidth, contentHeight) => {
-    //     console.log(contentHeight);
-    //     setScreenHeight(contentHeight);
-    // };
 
     const onChange = (event, selectedDate) => {
         let currentDate = date
@@ -48,40 +34,17 @@ const WalletScreen = ({
         setDate(currentDate);
     };
 
-    const showDatepicker = () => {
-        setShow(true);
-        setMode('date');
-    };
-
     const onPressSuggest = () => {
         getDoDStocks(date);
     }
 
-    // const scrollEnabled = screenHeight > height;
-    // console.log(screenHeight + " --- " + height);
-
-    useEffect(() => {
-        myStocksMap == null && getOwnedStocks();
-    }, [])
-
-    const renderItem = (stock, index) => {
+    const renderTopStocks = (stock, index) => {
         return (
             <DataTable.Row key={`item-${index}`}>
                 <DataTable.Cell>{stock.symbol}</DataTable.Cell>
                 <DataTable.Cell>${stock.latestPrice}</DataTable.Cell>
                 <DataTable.Cell>{stock.dividendYield}</DataTable.Cell>
                 <DataTable.Cell>{stock.buyQuantity}</DataTable.Cell>
-            </DataTable.Row>
-        );
-    }
-
-    const renderMyStocks = (stock, index) => {
-        return (
-            <DataTable.Row key={`item-${index}`}>
-                <DataTable.Cell>{stock.symbol}</DataTable.Cell>
-                <DataTable.Cell>${stock.buyPrice}</DataTable.Cell>
-                <DataTable.Cell>${stock.latestPrice}</DataTable.Cell>
-                <DataTable.Cell>{stock.quantity}</DataTable.Cell>
             </DataTable.Row>
         );
     }
@@ -121,23 +84,16 @@ const WalletScreen = ({
                 style={{flex: 1}}
                 contentContainerStyle={common.scrollView}
                 scrollEnabled={true}
-                // scrollEnabled={scrollEnabled}
-                // onContentSizeChange={onContentSizeChange}
             >
                 <View style={common.container}>
                     <View style={[common.row, common.spaceBetween]}>
-                        <Text style={common.title}>Wallet</Text>
+                        <Text style={common.title}>Invest</Text>
                         <Button
                             mode="outlined"
                             onPress={() => navigation.navigate('BuyStocks')}>
                             <MaterialIcons name="add" style={common.icon} />
                         </Button>
                     </View>
-                    <ListStock titles={["Symbol", "Buy Price", "Latest Price", "Quantity"]}
-                               loading={getOwnedStocksLoading}
-                               stocks={myStocksMap ? Array.from(myStocksMap.values()) : []}
-                               renderItem={renderMyStocks}/>
-                    <Line/>
                     <TextInput
                         label='Money to invest'
                         value={money}
@@ -168,7 +124,7 @@ const WalletScreen = ({
                     <View>
                         <Button
                             style={common.button}
-                            onPress={() => showDatepicker()}>
+                            onPress={() => setShow(true)}>
                             <Text style={common.buttonText}>Change date</Text>
                         </Button>
                     </View>
@@ -177,10 +133,10 @@ const WalletScreen = ({
                             testID="dateTimePicker"
                             timeZoneOffsetInMinutes={0}
                             value={date}
-                            mode={mode}
+                            mode='date'
                             is24Hour={true}
                             display="default"
-                            maximumDate={yesterday}
+                            maximumDate={getYesterday()}
                             onChange={onChange}
                         />
                     )}
@@ -198,7 +154,7 @@ const WalletScreen = ({
                             <ListStock titles={["Symbol", "Price", "Yield", "Quantity"]}
                                        loading={getTopYieldLoading}
                                        stocks={suggestedStocks}
-                                       renderItem={renderItem}
+                                       renderItem={renderTopStocks}
                             />
                             <Line/>
                         </>
@@ -211,9 +167,7 @@ const WalletScreen = ({
 
 const mapStateToProps = state => {
     return {
-        myStocksMap: state.stock.myStocksMap,
         topStocksByDate: state.stock.topStocksByDate,
-        getOwnedStocksLoading: state.loading.getOwnedStocks,
         getTopYieldLoading: state.loading.getTopYield,
     }
 }
@@ -226,10 +180,7 @@ const mapDispatchToProps = dispatch => {
                 date: date,
             }
         }),
-        getOwnedStocks: () => dispatch({
-            type: GET_OWNED_STOCKS_REQUESTED,
-        })
     })
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WalletScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(InvestScreen);

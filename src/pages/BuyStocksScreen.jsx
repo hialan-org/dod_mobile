@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView, View, Picker} from 'react-native';
-import {Text, TextInput, Button, ToggleButton} from 'react-native-paper';
+import {TextInput, Button, ToggleButton} from 'react-native-paper';
 import {common} from "../utils/stylesheet";
 import {connect} from 'react-redux';
 import {GET_STOCK_REQUESTED, MANAGE_STOCK_REQUESTED} from "../actions/types";
 
 const BuyStocksScreen = ({stocksSymbol, myStocksMap, loading, getStocksSymbol, manageStock}) => {
-    const [selectedStock, setSelectedStock] = useState(-1);
+    const [selectedStock, setSelectedStock] = useState(
+        stocksSymbol && stocksSymbol.length!=0 ? stocksSymbol[0].stockId : -1);
     const [price, setPrice] = useState("");
     const [quantity, setQuantity] = useState("");
     const [isBuy, setIsBuy] = useState('buy');

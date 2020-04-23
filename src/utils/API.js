@@ -104,3 +104,20 @@ export const getStocksPriceByDateApi = async (date) => {
             throw err;
         });
 }
+
+export const getProfitByDate = async(userId, stockId, startDate, endDate) => {
+    const getProfitByDate = `/user-profit/history/${stockId}?startDateStr=${startDate}&endDateStr=${endDate}`;
+    const accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN);
+    let options = {
+        headers: {
+            'Authorization': 'Bearer ' + accessToken,
+        }
+    }
+    return axios.get(API_BASE_URL + getProfitByDate, options)
+        .then(result => {
+            return result.data.body.userProfits;
+        }).catch(err => {
+            console.log(err);
+            throw err;
+        });
+}

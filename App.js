@@ -2,6 +2,7 @@ import React from 'react';
 import {Provider} from "react-redux";
 import store from "./src/store";
 import Navigation from "./src/pages/Navigation";
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 
@@ -9,6 +10,7 @@ import {
     I18nManager,
 } from "react-native";
 import {translate} from "./src/i18n";
+import {theme} from "./src/utils/stylesheet";
 
 const translationGetters = {
     // lazy requires (metro bundler does not support symlinks)
@@ -31,6 +33,7 @@ const setI18nConfig = () => {
     i18n.locale = locale;
 };
 
+
 export default class App extends React.Component {
 
     constructor(props) {
@@ -44,7 +47,9 @@ export default class App extends React.Component {
     render() {
         return (
             <Provider store={store}>
-                <Navigation/>
+                <PaperProvider theme={theme}>
+                    <Navigation/>
+                </PaperProvider>
             </Provider>
         );
     }

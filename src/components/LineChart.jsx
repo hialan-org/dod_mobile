@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import { Circle, G, Rect, Text } from 'react-native-svg';
-import { Dimensions } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
+import React, {useState} from 'react';
+import {Circle, G, Rect, Text} from 'react-native-svg';
+import {Dimensions, View} from 'react-native';
+import {LineChart} from 'react-native-chart-kit';
+import {common} from "../utils/stylesheet";
 
 const screenWidth = Dimensions.get('window').width;
 
-const Tooltip = ({ x, y, textX, textY, stroke, pointStroke, position }) => {
-    let tipW = 136,
+const Tooltip = ({x, y, textY, stroke, pointStroke, position}) => {
+    let tipW = 10*(textY.length+1),
         tipH = 36,
         tipX = 5,
         tipY = -9,
@@ -35,11 +36,11 @@ const Tooltip = ({ x, y, textX, textY, stroke, pointStroke, position }) => {
             />
             <G x={boxPosX < 40 ? 40 : boxPosX} y={posY}>
                 <Rect
-                    x={tipX + 1}
-                    y={tipY - 1}
-                    width={tipW - 2}
-                    height={tipH - 2}
-                    fill={'rgba(255, 255, 255, 0.9)'}
+                    x={tipX}
+                    y={tipY}
+                    width={tipW}
+                    height={tipH}
+                    fill={'rgba(255, 255, 255, 0.5)'}
                     rx={2}
                     ry={2}
                 />
@@ -53,16 +54,12 @@ const Tooltip = ({ x, y, textX, textY, stroke, pointStroke, position }) => {
                     fill={'transparent'}
                     stroke={stroke}
                 />
-                <Text x={tipTxtX} y={tipTxtY} fontSize="10" textAnchor="start">
-                    {textX}
-                </Text>
-
                 <Text
                     x={tipTxtX}
                     y={tipTxtY + 14}
                     fontSize="12"
                     textAnchor="start">
-                    {textY}
+                    {`$${textY}`}
                 </Text>
             </G>
         </G>
@@ -75,7 +72,6 @@ Tooltip.propTypes = {
     height: PropTypes.number,
     stroke: PropTypes.string,
     pointStroke: PropTypes.string,
-    textX: PropTypes.string,
     textY: PropTypes.string,
     position: PropTypes.string,
 };
@@ -88,13 +84,12 @@ const tooltipDecorators = (state, data, valueFormatter) => () => {
     if (state === null) {
         return null;
     }
-    const { index, value, x, y } = state;
-    const textX = data.labels[index];
-    const position = data.labels.length === index + 1 ? 'left' : 'right';
+    const {index, value, x, y} = state;
+    // const position = data.labels.length === index + 1 ? 'left' : 'right';
+    const position = 'right'
 
     return (
         <Tooltip
-            textX={String(textX)}
             textY={valueFormatter(value)}
             x={x}
             y={y}
@@ -105,7 +100,7 @@ const tooltipDecorators = (state, data, valueFormatter) => () => {
     );
 };
 
-const LineChartWithTooltips = ({ valueFormatter, ...props }) => {
+const LineChartWithTooltips = ({valueFormatter, ...props}) => {
     const [state, setState] = useState(null);
     return (
         <LineChart

@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, StyleSheet} from 'react-native';
-import { ActivityIndicator, Colors} from "react-native-paper";
-import { DataTable } from 'react-native-paper';
+import { ActivityIndicator, Colors,DataTable} from "react-native-paper";
 
 export const ListStock = ({titles, stocks, loading, renderItem}) => {
     return (
@@ -13,7 +12,7 @@ export const ListStock = ({titles, stocks, loading, renderItem}) => {
                     )}
                 </DataTable.Header>
 
-                {loading ? <ActivityIndicator animating={true} color={Colors.red800} /> : (
+                {loading ? <ActivityIndicator animating={true} /> : (
                     (stocks && stocks.length) ? stocks.map((stock, index) => {
                         return (
                             renderItem(stock, index)

@@ -3,7 +3,7 @@ import {
     GET_NOTIFICATION_REQUESTED,
     GET_OWNED_STOCKS_FAILED,
     GET_OWNED_STOCKS_REQUESTED,
-    GET_OWNED_STOCKS_SUCCESS,
+    GET_OWNED_STOCKS_SUCCESS, GET_PROFIT_FAILED, GET_PROFIT_REQUESTED, GET_PROFIT_SUCCESS,
     GET_STAT_REQUESTED,
     GET_STOCK_REQUESTED, GET_STOCKS_PRICE_FAILED,
     GET_STOCKS_PRICE_REQUESTED, GET_STOCKS_PRICE_SUCCESS,
@@ -32,6 +32,7 @@ const initialState = {
     getOwnedStocks: false,
     getTopYield: false,
     getStocksHistory: false,
+    getProfit: false,
 }
 
 export default function loadingReducer(state = initialState, action) {
@@ -68,6 +69,17 @@ export default function loadingReducer(state = initialState, action) {
             return {
                 ...state,
                 getStocksHistory: false,
+            }
+        case GET_PROFIT_REQUESTED:
+            return {
+                ...state,
+                getProfit: true,
+            }
+        case GET_PROFIT_SUCCESS:
+        case GET_PROFIT_FAILED:
+            return {
+                ...state,
+                getProfit: false,
             }
         case LOGIN_REQUESTED:
         case LOGOUT_REQUESTED:

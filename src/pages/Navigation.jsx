@@ -17,11 +17,12 @@ import {Platform, View} from "react-native";
 import {LOGIN_REQUESTED, LOGIN_SUCCESS, LOGOUT_REQUESTED} from "../actions/types";
 import DetailsScreen from "./DetailsScreen";
 import EmptyScreen from "./EmptyScreen";
-import WalletScreen from "./WalletScreen";
+import InvestScreen from "./InvestScreen";
 import Notifications from "./Notifications";
 import BuyStocksScreen from "./BuyStocksScreen";
 import {getUserInSecureStore} from "../utils";
 import {translate} from "../i18n";
+import StocksScreen from "./StocksScreen";
 
 const isInClient = Constants.default.appOwnership === 'expo';
 // const isInClient = false;
@@ -64,10 +65,19 @@ function MainNavigation() {
                 }}
             />
             <Tab.Screen
-                name="WalletScreen"
-                component={WalletScreen}
+                name="InvestScreen"
+                component={InvestScreen}
                 options={{
-                    tabBarLabel: 'WalletScreen',
+                    tabBarLabel: 'Invest',
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="wallet" color={color} size={size} />
+                    ),
+                }}/>
+            <Tab.Screen
+                name="StocksScreen"
+                component={StocksScreen}
+                options={{
+                    tabBarLabel: 'Stocks',
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="wallet" color={color} size={size} />
                     ),

@@ -1,11 +1,10 @@
-import {loginWatcher, logoutWatcher} from "./userSaga";
+import {userSaga} from "./userSaga";
+import {stockSaga} from "./stockSaga";
 import { all } from 'redux-saga/effects';
-import {getTopYieldWatcher, stockSaga} from "./stockSaga";
 
 export default function* rootSaga() {
     yield all([
-        loginWatcher(),
-        logoutWatcher(),
+        userSaga(),
         stockSaga(),
     ])
     // code after all-effect

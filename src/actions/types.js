@@ -33,3 +33,7 @@ export const GET_OWNED_STOCKS_FAILED = 'getOwnedStocksFailed';
 export const GET_STOCKS_PRICE_REQUESTED = 'getStocksPriceRequested';
 export const GET_STOCKS_PRICE_SUCCESS = 'getStocksPriceSuccess';
 export const GET_STOCKS_PRICE_FAILED = 'getStocksPriceFailed';
+
+export const GET_PROFIT_REQUESTED = 'getProfitRequest';
+export const GET_PROFIT_SUCCESS = 'getProfitSuccess';
+export const GET_PROFIT_FAILED = 'getProfitFailed';
