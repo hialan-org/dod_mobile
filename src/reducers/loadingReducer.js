@@ -11,21 +11,9 @@ import {
     GET_TOP_YIELD_STOCKS_REQUESTED,
     GET_TOP_YIELD_STOCKS_SUCCESS,
     LOGIN_REQUESTED,
-    LOGOUT_REQUESTED,
+    LOGOUT_REQUESTED, LOGOUT_SUCCESS,
     MANAGE_STOCK_REQUESTED
 } from "../actions/types";
-
-const classify = (type) => {
-    if(type.includes(REQUEST)){
-        return REQUEST;
-    }
-    if(type.includes(SUCCESS)){
-        return SUCCESS;
-    }
-    if(type.includes(FAILED)){
-        return FAILED;
-    }
-}
 
 const initialState = {
     general: false,
@@ -87,11 +75,8 @@ export default function loadingReducer(state = initialState, action) {
         case GET_NOTIFICATION_REQUESTED:
         case GET_STOCK_REQUESTED:
         case MANAGE_STOCK_REQUESTED:
-        case GET_STOCKS_PRICE_REQUESTED:
-            return {
-                ...state,
-                general: true,
-            };
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return {
                 ...state,

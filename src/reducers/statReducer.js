@@ -1,5 +1,5 @@
 import {
-    GET_STAT_REQUESTED, GET_STAT_SUCCESS, GET_STAT_FAILED, GET_PROFIT_SUCCESS
+    GET_STAT_REQUESTED, GET_STAT_SUCCESS, GET_STAT_FAILED, GET_PROFIT_SUCCESS, LOGOUT_SUCCESS
 } from "../actions/types";
 
 const initialState = {
@@ -31,6 +31,8 @@ export default function statReducer(state = initialState, action) {
                 profitByDate: profitByDate,
                 profit: userProfit,
             }
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     }

@@ -1,4 +1,4 @@
-import {MANAGE_STOCK_FAILED, MANAGE_STOCK_SUCCESS} from "../actions/types";
+import {LOGOUT_SUCCESS, MANAGE_STOCK_FAILED, MANAGE_STOCK_SUCCESS} from "../actions/types";
 
 const initialState = {
     general: false,
@@ -23,6 +23,8 @@ export default function loadingReducer(state = initialState, action) {
                 ...state,
                 error: "",
             }
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return {
                 ...state,
