@@ -54,8 +54,6 @@ const ProfitChart = ({loadingGetProfit, profit, myStocks}) => {
         }]
     };
 
-    // console.log(myStocks);
-
     return (
         <>
             {loadingGetProfit
