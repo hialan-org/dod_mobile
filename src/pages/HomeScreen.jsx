@@ -24,7 +24,6 @@ function HomeScreen({
                         profit, getOwnedStocksLoading, myStocksMap,
                         getProfit, getOwnedStocks
                     }) {
-
     useEffect(() => {
         getUserInSecureStore().then((user) => {
             getProfit(user.userId, 0, weekBefore, yesterday);

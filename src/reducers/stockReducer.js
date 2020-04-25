@@ -6,7 +6,7 @@ import {
     GET_STOCK_SUCCESS,
     GET_OWNED_STOCKS_SUCCESS,
     MANAGE_STOCK_SUCCESS,
-    GET_STOCKS_PRICE_SUCCESS,
+    GET_STOCKS_PRICE_SUCCESS, LOGOUT_SUCCESS,
 } from "../actions/types";
 import {formatDateString} from "../utils";
 
@@ -82,6 +82,8 @@ export default function stockReducer(state = initialState, action) {
                     return s1.stock.symbol.localeCompare(s2.stock.symbol);
                 }),
             }
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return {
                 ...state,

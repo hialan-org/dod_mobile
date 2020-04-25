@@ -4,7 +4,7 @@ import {
     GET_STAT_FAILED,
     GET_NOTIFICATION_REQUESTED,
     GET_NOTIFICATION_SUCCESS,
-    GET_NOTIFICATION_FAILED
+    GET_NOTIFICATION_FAILED, LOGOUT_SUCCESS
 } from "../actions/types";
 
 const initialState = [{
@@ -33,6 +33,8 @@ export default function statReducer(state = initialState, action) {
             return {
                 ...state,
             }
+        case LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     }

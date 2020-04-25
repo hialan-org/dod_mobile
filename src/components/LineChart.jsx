@@ -67,8 +67,8 @@ const Tooltip = ({x, y, textY, stroke, pointStroke, position}) => {
 };
 
 Tooltip.propTypes = {
-    x: PropTypes.func.isRequired,
-    y: PropTypes.func.isRequired,
+    x: PropTypes.number,
+    y: PropTypes.number,
     height: PropTypes.number,
     stroke: PropTypes.string,
     pointStroke: PropTypes.string,
