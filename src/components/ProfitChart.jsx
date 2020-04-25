@@ -52,6 +52,7 @@ const ProfitChart = ({loadingGetProfit, profit}) => {
         }]
     };
 
+    // handling 0 stocks
     return (
         <>
             {loadingGetProfit
