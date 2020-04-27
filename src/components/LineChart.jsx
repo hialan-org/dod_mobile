@@ -8,8 +8,8 @@ import {common} from "../utils/stylesheet";
 const screenWidth = Dimensions.get('window').width;
 
 const Tooltip = ({x, y, textY, stroke, pointStroke, position}) => {
-    let tipW = 10*(textY.length+1),
-        tipH = 36,
+    let tipW = 9*(textY.length+1),
+        tipH = 20,
         tipX = 5,
         tipY = -9,
         tipTxtX = 12,
@@ -40,7 +40,7 @@ const Tooltip = ({x, y, textY, stroke, pointStroke, position}) => {
                     y={tipY}
                     width={tipW}
                     height={tipH}
-                    fill={'rgba(255, 255, 255, 0.5)'}
+                    fill={'rgba(0, 0, 0, 0.5)'}
                     rx={2}
                     ry={2}
                 />
@@ -56,8 +56,9 @@ const Tooltip = ({x, y, textY, stroke, pointStroke, position}) => {
                 />
                 <Text
                     x={tipTxtX}
-                    y={tipTxtY + 14}
+                    y={tipTxtY}
                     fontSize="12"
+                    fontWeight="bold"
                     textAnchor="start">
                     {`$${textY}`}
                 </Text>
