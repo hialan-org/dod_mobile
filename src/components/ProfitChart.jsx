@@ -7,8 +7,9 @@ import {connect} from 'react-redux';
 import {timestampToDate} from "../utils";
 import {ActivityIndicator} from "react-native-paper";
 import LineChartWithTooltips from "./LineChart";
+import {Text} from "react-native";
 
-const ProfitChart = ({loadingGetProfit, profit}) => {
+const ProfitChart = ({loadingGetProfit, profit, myStocks}) => {
     const formatYAxis = (value) => {
         if(value/1000000>1){
             return value/1000000 + 'm';
@@ -18,6 +19,7 @@ const ProfitChart = ({loadingGetProfit, profit}) => {
         }
         return value;
     }
+
 
     const chartConfig = {
         decimalPlaces: 0, // optional, defaults to 2dp
@@ -56,7 +58,8 @@ const ProfitChart = ({loadingGetProfit, profit}) => {
         <>
             {loadingGetProfit
                 ? <ActivityIndicator animating={true}/>
-                : <LineChartWithTooltips
+                : (!myStocks || myStocks.size === 0) ? <Text>Please, Buy some stocks!</Text> :
+                    (profit && profit.length > 0) ? <LineChartWithTooltips
                     data={data}
                     width={screenWidth} // from react-native
                     height={250}
@@ -73,15 +76,17 @@ const ProfitChart = ({loadingGetProfit, profit}) => {
                     }}
                     verticalLabelRotation={30}
                     segments={6}
-                />}
+                    /> : <Text>Come back later to see your profit!</Text>}
         </>
     )
 }
 
 const mapStateToProps = state => {
+    // console.log(state.stat.profitByDate);
     return {
         profit: state.stat.profitByDate,
         loadingGetProfit: state.loading.getProfit,
+        myStocks: state.stock.myStocksMap,
     }
 }
 
