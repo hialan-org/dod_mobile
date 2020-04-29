@@ -11,24 +11,24 @@ import {Text} from "react-native";
 
 const ProfitChart = ({loadingGetProfit, profit, myStocks}) => {
     const formatYAxis = (value) => {
-        if(value/1000000>1){
-            return value/1000000 + 'm';
-        }
-        if(value/1000>1){
-            return value/1000 + 'k';
-        }
+        // if(value/1000000>1){
+        //     return value/1000000 + 'm';
+        // }
+        // if(value/1000>1){
+        //     return value/1000 + 'k';
+        // }
         return value;
     }
 
 
     const chartConfig = {
         decimalPlaces: 0, // optional, defaults to 2dp
-        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-        strokeWidth: 2, // optional, default 3
-        propsForLabels: {
-            fontSize: "10"
-        }
+        backgroundGradientFrom: '#fff',
+        backgroundGradientTo: '#fff',
+        color: (opacity = 1) => `rgba(63, 143, 244, ${opacity})`,
+        strokeWidth: 2 // optional, default 3
     };
+    const segments = 6;
 
     const screenWidth = Dimensions.get("window").width - 20;
     let labels = ["January", "February", "March", "April", "May", "June", "July"];
@@ -36,6 +36,8 @@ const ProfitChart = ({loadingGetProfit, profit, myStocks}) => {
         Math.random() * 100, Math.random() * 100, Math.random() * 100];
     let data2 = [Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100,
         Math.random() * 100, Math.random() * 100, Math.random() * 100];
+    let min = 0;
+    let max = 0;
 
     if (profit && profit.length > 0) {
         //date, totalAmount, investedAMount
@@ -43,15 +45,29 @@ const ProfitChart = ({loadingGetProfit, profit, myStocks}) => {
         // labels = profit.map(profit => profit.date);
         data1 = profit.map(profit => profit.totalAmount);
         data2 = profit.map(profit => profit.investedAmount);
+
+        min = Math.min(...data1, ...data2);
+        max = Math.max(...data1, ...data2);
+        const avg = Math.ceil((min+max)/2/100)*100;
+        const step = Math.ceil(((max-min)/segments)/100)*100;
+        min = avg - step*segments/2;
+        max = avg + step*segments/2;
     }
 
     const data = {
         labels: labels,
         datasets: [{
             data: data1,
+            color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
         }, {
             data: data2,
-        }]
+        }, {
+            data: [max],
+            color: () => `rgba(0, 0, 0, 0)`
+        },{
+            data: [min],
+            color: () => `rgba(0, 0, 0, 0)`
+        },]
     };
 
     return (
@@ -75,7 +91,7 @@ const ProfitChart = ({loadingGetProfit, profit, myStocks}) => {
                         return formatYAxis(value);
                     }}
                     verticalLabelRotation={30}
-                    segments={6}
+                    segments={segments}
                     /> : <Text>Come back later to see your profit!</Text>}
         </>
     )

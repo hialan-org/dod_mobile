@@ -1,4 +1,4 @@
-import {View, Text, Button, StyleSheet, SafeAreaView, ScrollView, StatusBar, Dimensions} from "react-native";
+import {View, StyleSheet, ScrollView, StatusBar} from "react-native";
 import React, {useState, useEffect} from "react";
 import {
     GET_OWNED_STOCKS_REQUESTED,
@@ -11,7 +11,7 @@ import {Entypo} from '@expo/vector-icons';
 import {common} from "../utils/stylesheet";
 import {ListStock} from "../components/ListStocks";
 import {Line} from "../components/Line";
-import {Colors, DataTable, Subheading} from "react-native-paper";
+import {Colors, DataTable, Subheading, Text} from "react-native-paper";
 import {getUserInSecureStore, getYesterday} from "../utils";
 
 // const { height } = Dimensions.get('window');
@@ -21,23 +21,46 @@ let weekBefore = new Date(getYesterday());
 weekBefore.setDate(weekBefore.getDate() - 7);
 
 function HomeScreen({
-                        profit, getOwnedStocksLoading, myStocksMap,
+                        getProfitLoading, profit, getOwnedStocksLoading, myStocksMap,
                         getProfit, getOwnedStocks
                     }) {
+    const [user, setUser] = useState(null);
+    const [selectedStock, setSelectedStock] = useState(null);
+
     useEffect(() => {
-        getUserInSecureStore().then((user) => {
-            getProfit(user.userId, 0, weekBefore, yesterday);
+        getUserInSecureStore().then((result) => {
+            setUser(result);
         });
         myStocksMap == null && getOwnedStocks();
     }, [])
 
+    useEffect(() => {
+        if (user) {
+            getProfit(user.userId, 0, weekBefore, yesterday);
+        }
+    }, [user])
+
     const renderMyStocks = (stock, index) => {
+        const currentGain = stock.quantity*(stock.latestPrice - stock.buyPrice);
         return (
-            <DataTable.Row key={`item-${index}`}>
+            <DataTable.Row key={`item-${index}`}
+                           onPress={() => {
+                               if(selectedStock && stock.stockId === selectedStock.stockId){
+                                   getProfit(user.userId, 0, weekBefore, yesterday);
+                                   setSelectedStock(null);
+                               } else {
+                                   getProfit(user.userId, stock.stockId, weekBefore, yesterday);
+                                   setSelectedStock(stock);
+                               }
+                           }}
+                           style={selectedStock && stock.stockId===selectedStock.stockId ? common.tableRowSelected : common.tableRow}
+            >
                 <DataTable.Cell>{stock.symbol}</DataTable.Cell>
                 <DataTable.Cell>${stock.buyPrice}</DataTable.Cell>
-                <DataTable.Cell>${stock.latestPrice}</DataTable.Cell>
                 <DataTable.Cell>{stock.quantity}</DataTable.Cell>
+                <DataTable.Cell>
+                    <Text style={{color: currentGain>=0 ? 'green' : 'red'}}>${currentGain.toFixed(1)}</Text>
+                </DataTable.Cell>
             </DataTable.Row>
         );
     }
@@ -52,18 +75,18 @@ function HomeScreen({
             >
                 <View style={common.container}>
                     <Text style={common.title}>Investing!!!</Text>
-                    <Text
+                    {!getProfitLoading && <Text
                         style={[styles.profit, profit >= 0 ? styles.positiveProfit : styles.negativeProfit]}>
                         {profit >= 0 ?
                             (<Entypo name="triangle-up" style={[{color: "green"}, common.icon]}/>) :
                             (<Entypo name="triangle-down" style={[{color: "green"}, common.icon]}/>)}
                         {profit}
-                    </Text>
+                    </Text>}
                     <ProfitChart/>
                     <Line/>
-                    <Subheading style={common.label}>My stocks: </Subheading>
+                    <Subheading style={common.label}>My stocks</Subheading>
 
-                    <ListStock titles={["Symbol", "Buy Price", "Latest Price", "Quantity"]}
+                    <ListStock titles={["Symbol", "Buy Price", "Quantity", "Gain/Loss"]}
                                loading={getOwnedStocksLoading}
                                stocks={myStocksMap ? Array.from(myStocksMap.values()) : []}
                                renderItem={renderMyStocks}/>
@@ -97,6 +120,7 @@ const mapStateToProps = state => {
         user: state.user,
         profit: state.stat.profit,
         getOwnedStocksLoading: state.loading.getOwnedStocks,
+        getProfitLoading: state.loading.getProfit,
     }
 }
 

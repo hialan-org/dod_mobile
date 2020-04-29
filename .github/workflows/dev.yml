@@ -1,12 +1,11 @@
-  
-name: Expo Publish Prod
+name: Testing Dev
 on:
   push:
     branches: 
       - '*'
       - '!master'
 jobs:
-  publish:
+  test:
     name: Install and publish
     runs-on: ubuntu-18.04
     steps:

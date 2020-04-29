@@ -9,7 +9,7 @@ import {ToggleButton, TextInput, Button} from "react-native-paper";
 
 const mockStore = configureStore([]);
 
-describe.skip('<BuyStocksScreen />', () => {
+describe('<BuyStocksScreen />', () => {
     let store;
     let component;
     beforeEach(() => {

@@ -1,5 +1,6 @@
 import {StyleSheet} from "react-native";
 import {DefaultTheme} from "react-native-paper";
+import {Colors} from "react-native-paper";
 
 export const common = StyleSheet.create({
     containerWrapper: {
@@ -79,6 +80,11 @@ export const common = StyleSheet.create({
     spaceBetween: {
       justifyContent: 'space-between',
     },
+    tableRow: {
+    },
+    tableRowSelected: {
+        backgroundColor: Colors.grey400,
+    }
 });
 
 export const theme = {
