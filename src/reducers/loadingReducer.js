@@ -12,7 +12,8 @@ import {
     GET_TOP_YIELD_STOCKS_SUCCESS,
     LOGIN_REQUESTED,
     LOGOUT_REQUESTED,
-    MANAGE_STOCK_REQUESTED
+    MANAGE_STOCK_REQUESTED,
+    GET_REBALANCE_STOCKS_REQUESTED, GET_REBALANCE_STOCKS_SUCCESS, GET_REBALANCE_STOCKS_FAILED
 } from "../actions/types";
 
 const classify = (type) => {
@@ -33,6 +34,8 @@ const initialState = {
     getTopYield: false,
     getStocksHistory: false,
     getProfit: false,
+    getRebalance: false,
+
 }
 
 export default function loadingReducer(state = initialState, action) {
@@ -91,6 +94,18 @@ export default function loadingReducer(state = initialState, action) {
             return {
                 ...state,
                 general: true,
+            };
+
+        case GET_REBALANCE_STOCKS_REQUESTED:
+            return {
+                ...state,
+                getRebalance: true,
+            };
+        case GET_REBALANCE_STOCKS_SUCCESS:
+        case GET_REBALANCE_STOCKS_FAILED:
+            return {
+                ...state,
+                getRebalance: false,
             };
         default:
             return {

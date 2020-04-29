@@ -4,7 +4,11 @@ import {Text, TextInput, RadioButton, Subheading, Button, DataTable} from 'react
 import {common} from "../utils/stylesheet";
 import {Line} from "../components/Line";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {GET_OWNED_STOCKS_REQUESTED, GET_TOP_YIELD_STOCKS_REQUESTED} from "../actions/types";
+import {
+    GET_OWNED_STOCKS_REQUESTED,
+    GET_REBALANCE_STOCKS_REQUESTED,
+    GET_TOP_YIELD_STOCKS_REQUESTED
+} from "../actions/types";
 import {connect} from 'react-redux';
 import {ListStock} from "../components/ListStocks";
 import {formatDateString, getYesterday, isWeekend} from "../utils";
@@ -13,8 +17,8 @@ import {MaterialIcons} from "@expo/vector-icons";
 const {height} = Dimensions.get('window');
 
 const InvestScreen = ({
-                          getTopYieldLoading, topStocksByDate, navigation,
-                          getDoDStocks, getOwnedStocks
+                          getTopYieldLoading, getRebalanceLoading, topStocksByDate, navigation,
+                          getDoDStocks, getOwnedStocks, getDoRebalance
                       }) => {
     const [money, setMoney] = useState("");
     const [checked, setChecked] = useState("dod");
@@ -38,6 +42,11 @@ const InvestScreen = ({
         getDoDStocks(date);
     }
 
+    // rebalance
+    const onPressRebalance =  () => {
+        getDoRebalance(date);
+    }
+
     const renderTopStocks = (stock, index) => {
         return (
             <DataTable.Row key={`item-${index}`}>
@@ -50,6 +59,7 @@ const InvestScreen = ({
     }
 
     let suggestedStocks = null;
+    let rebalancedStocks = null; //rebalance
     let investEachStock = money ? parseFloat(money) / 5 : 0;
     if (topStocksByDate && topStocksByDate[formatDateString(date)]) {
         switch (checked) {
@@ -77,6 +87,7 @@ const InvestScreen = ({
                 break;
         }
     }
+    
 
     return (
         <SafeAreaView style={common.containerWrapper}>
@@ -159,6 +170,27 @@ const InvestScreen = ({
                             <Line/>
                         </>
                     )}
+
+                    {/*rebalance*/}
+                    {!rebalancedStocks && <Button
+                        style={common.button}
+                        loading={getRebalanceLoading}
+                        onPress={()=>{onPressRebalance()}}
+                        >
+                        <Text style={common.buttonText}>Rebalance</Text>
+                    </Button>}
+                    {rebalancedStocks &&
+                    (
+                        <>
+                            <ListStock titles={["Symbol", "Price", "Yield", "Quantity"]}
+                                       loading={getRebalanceLoading}
+                                       stocks={rebalancedStocks}
+                                       renderItem={renderTopStocks}
+                            />
+                            <Line/>
+                        </>
+                    )}
+
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -169,6 +201,7 @@ const mapStateToProps = state => {
     return {
         topStocksByDate: state.stock.topStocksByDate,
         getTopYieldLoading: state.loading.getTopYield,
+        getRebalanceLoading: state.loading.getRebalance,
     }
 }
 
@@ -178,6 +211,13 @@ const mapDispatchToProps = dispatch => {
             type: GET_TOP_YIELD_STOCKS_REQUESTED,
             payload: {
                 date: date,
+            }
+        }),
+        // rebalance
+        getDoRebalance: (date) => dispatch({
+           type: GET_REBALANCE_STOCKS_REQUESTED,
+            payload: {
+               date: date,
             }
         }),
     })
