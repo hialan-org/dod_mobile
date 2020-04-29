@@ -16,7 +16,7 @@ const renderStocksPrice = (stockPrice, index) => {
     );
 }
 
-describe.skip('<ListStocks />', () => {
+describe('<ListStocks />', () => {
     it('Title render', () => {
         const listStocks = renderer.create(
             <ListStock
