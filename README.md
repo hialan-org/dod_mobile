@@ -1,6 +1,6 @@
 # Dog of The Dow Mobile Application
 The mobile application that help customer to invest their money in stock market using strategies like Dog of The Dow.  
-User can use this application as the stock wallet and keep track of their investment.
+User can use this application as the stock wallet and keep track of their investment.  
 ![](https://github.com/hialan-org/dod_mobile/workflows/Testing%20Dev/badge.svg) 
 ![](https://github.com/hialan-org/dod_mobile/workflows/Testing%20Prod/badge.svg) 
 ![](https://github.com/hialan-org/dod_mobile/workflows/Release/badge.svg)
