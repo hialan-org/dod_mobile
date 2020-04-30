@@ -23,7 +23,7 @@ describe('<HomeScreen />', () => {
                 profit: 10,
             },
             stock: {
-                myStocksMap: new Map()
+                myStocks: new Map()
             },
             loading: {
                 getOwnedStocks: false,
@@ -44,7 +44,7 @@ describe('<HomeScreen />', () => {
                 profit: 10,
             },
             stock: {
-                myStocksMap: new Map()
+                myStocks: new Map()
             },
             loading: {
                 getOwnedStocks: false,
@@ -67,7 +67,7 @@ describe('<HomeScreen />', () => {
                 profit: -10,
             },
             stock: {
-                myStocksMap: new Map()
+                myStocks: new Map()
             },
             loading: {
                 getOwnedStocks: false,

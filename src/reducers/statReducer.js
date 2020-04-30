@@ -22,14 +22,22 @@ export default function statReducer(state = initialState, action) {
                 ...state,
             }
         case GET_PROFIT_SUCCESS:
-            const profitByDate = action.payload.profit.sort((s1,s2) => {
-                return s1.date - s2.date;
-            })
-            const userProfit = profitByDate[profitByDate.length-1].userProfit;
-            return {
-                ...state,
-                profitByDate: profitByDate,
-                profit: userProfit,
+            if(action.payload.profit){
+                const profitByDate = action.payload.profit.sort((s1,s2) => {
+                    return s1.date - s2.date;
+                })
+                const userProfit = profitByDate[profitByDate.length-1].userProfit;
+                return {
+                    ...state,
+                    profitByDate: profitByDate,
+                    profit: userProfit,
+                }
+            } else {
+                return {
+                    ...state,
+                    profitByDate: [],
+                    profit: 0,
+                }
             }
         case LOGOUT_SUCCESS:
             return initialState;

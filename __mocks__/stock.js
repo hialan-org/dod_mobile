@@ -33,5 +33,5 @@ export const stock = {
     topStocksByDate: null,
     stocksPrice: stocksPrice,
     stocksSymbol: stocksSymbol,
-    myStocksMap: null,
+    myStocks: null,
 }

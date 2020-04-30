@@ -102,7 +102,7 @@ const mapStateToProps = state => {
     return {
         profit: state.stat.profitByDate,
         loadingGetProfit: state.loading.getProfit,
-        myStocks: state.stock.myStocksMap,
+        myStocks: state.stock.myStocks,
     }
 }
 
