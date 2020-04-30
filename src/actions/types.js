@@ -14,10 +14,6 @@ export const GET_TOP_YIELD_STOCKS_REQUESTED = 'getTopYieldStocksRequested';
 export const GET_TOP_YIELD_STOCKS_SUCCESS = 'getTopYieldStocksSuccess';
 export const GET_TOP_YIELD_STOCKS_FAILED = 'getTopYieldStocksFailed';
 
-export const GET_REBALANCE_STOCKS_REQUESTED = 'getRebalanceStocksRequested';
-export const GET_REBALANCE_STOCKS_SUCCESS = 'getRebalanceStocksSuccess';
-export const GET_REBALANCE_STOCKS_FAILED = 'getRebalancedStocksFailed';
-
 export const GET_NOTIFICATION_REQUESTED = 'getNotificationRequested';
 export const GET_NOTIFICATION_SUCCESS = 'getNotificationSuccess';
 export const GET_NOTIFICATION_FAILED = 'getNotificationFailed';
