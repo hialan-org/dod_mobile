@@ -37,6 +37,23 @@ export const getTopYieldApi = async (date, range) => {
         });
 }
 
+export const getRebalanceApi = async (date, range) => {
+    const getDodApiUrl = `/stocks/getTopYield?date=${date}&range=${range}`;
+    const accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN);
+    let options = {
+        headers: {
+            'Authorization': 'Bearer ' + accessToken,
+        }
+    }
+    return axios.get(API_BASE_URL + getDodApiUrl, options)
+        .then(result => {
+            return result.data;
+        }).catch(err => {
+            console.log(err);
+            throw err;
+        });
+}
+
 export const getStockApi = async () => {
     const getStockApiUrl = `/stocks`;
     const accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN);
