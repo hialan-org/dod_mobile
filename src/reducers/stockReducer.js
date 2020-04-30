@@ -39,7 +39,7 @@ export default function stockReducer(state = initialState, action) {
                 }),
             }
         case GET_OWNED_STOCKS_SUCCESS:
-            const myStocksMap = new Map();
+            let myStocksMap = new Map();
             action.payload.map((stock, index) => {
                 myStocksMap.set(stock.stockId, stock);
             })
@@ -49,17 +49,18 @@ export default function stockReducer(state = initialState, action) {
             }
         case MANAGE_STOCK_SUCCESS:
             action.payload.map((ownedStock, index) => {
-                let tmpStock = state.myStocksMap.get(ownedStock.stockId);
+                myStocksMap = [...state.myStocksMap];
+                let tmpStock = myStocksMap.get(ownedStock.stockId);
                 if(tmpStock){
                     if(ownedStock.stockQuantity == 0){
-                        state.myStocksMap.delete(ownedStock.stockId);
+                        myStocksMap.delete(ownedStock.stockId);
                     } else {
                         tmpStock = {
                             ...tmpStock,
                             buyPrice: ownedStock.stockAveragePrice,
                             quantity: ownedStock.stockQuantity,
                         }
-                        state.myStocksMap.set(ownedStock.stockId, tmpStock);
+                        myStocksMap.set(ownedStock.stockId, tmpStock);
                     }
                 } else {
                     tmpStock = {
@@ -69,11 +70,12 @@ export default function stockReducer(state = initialState, action) {
                         stockId: ownedStock.stockId,
                         symbol: ownedStock.symbol,
                     }
-                    state.myStocksMap.set(tmpStock.stockId, tmpStock);
+                    myStocksMap.set(tmpStock.stockId, tmpStock);
                 }
             });
             return {
                 ...state,
+                myStocksMap,
             }
         case GET_STOCKS_PRICE_SUCCESS:
             return {

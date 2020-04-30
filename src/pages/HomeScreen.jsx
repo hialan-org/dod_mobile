@@ -64,7 +64,6 @@ function HomeScreen({
             </DataTable.Row>
         );
     }
-
     return (
         <View style={common.containerWrapper}>
             <StatusBar barStyle="light-content" backgroundColor="#468189"/>

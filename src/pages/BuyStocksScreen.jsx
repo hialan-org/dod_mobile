@@ -5,7 +5,7 @@ import {common} from "../utils/stylesheet";
 import {connect} from 'react-redux';
 import {GET_STOCK_REQUESTED, MANAGE_STOCK_REQUESTED} from "../actions/types";
 
-const BuyStocksScreen = ({stocksSymbol, myStocksMap, loading, getStocksSymbol, manageStock}) => {
+const BuyStocksScreen = ({stocksSymbol, myStocksMap, loading, manageStockLoading, getStocksSymbol, manageStock}) => {
     const [selectedStock, setSelectedStock] = useState(
         stocksSymbol && stocksSymbol.length!=0 ? stocksSymbol[0].stockId : -1);
     const [price, setPrice] = useState("");
@@ -87,7 +87,7 @@ const BuyStocksScreen = ({stocksSymbol, myStocksMap, loading, getStocksSymbol, m
                     onChangeText={text => setQuantity(text)}
                     keyboardType='decimal-pad'
                 />
-                <Button icon="plus-circle" mode="contained" onPress={onPressAccepted} loading={loading}>
+                <Button icon="plus-circle" mode="contained" onPress={onPressAccepted} loading={loading || manageStockLoading}>
                     Accept
                 </Button>
             </View>
@@ -99,6 +99,7 @@ const mapStateToProps = state => {
         stocksSymbol: state.stock.stocksSymbol,
         myStocksMap: state.stock.myStocksMap,
         loading: state.loading.general,
+        manageStockLoading: state.loading.manageStock,
     }
 }
 

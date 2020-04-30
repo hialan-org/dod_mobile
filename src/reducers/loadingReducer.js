@@ -11,8 +11,8 @@ import {
     GET_TOP_YIELD_STOCKS_REQUESTED,
     GET_TOP_YIELD_STOCKS_SUCCESS,
     LOGIN_REQUESTED,
-    LOGOUT_REQUESTED, LOGOUT_SUCCESS,
-    MANAGE_STOCK_REQUESTED
+    LOGOUT_REQUESTED, LOGOUT_SUCCESS, MANAGE_STOCK_FAILED,
+    MANAGE_STOCK_REQUESTED, MANAGE_STOCK_SUCCESS
 } from "../actions/types";
 
 const initialState = {
@@ -21,6 +21,7 @@ const initialState = {
     getTopYield: false,
     getStocksHistory: false,
     getProfit: false,
+    manageStock: false,
 }
 
 export default function loadingReducer(state = initialState, action) {
@@ -69,14 +70,28 @@ export default function loadingReducer(state = initialState, action) {
                 ...state,
                 getProfit: false,
             }
+        case MANAGE_STOCK_REQUESTED:
+            return {
+                ...state,
+                manageStock: true,
+            }
+        case MANAGE_STOCK_SUCCESS:
+        case MANAGE_STOCK_FAILED:
+            return {
+                ...state,
+                manageStock: false,
+            }
+        case LOGOUT_SUCCESS:
+            return initialState;
         case LOGIN_REQUESTED:
         case LOGOUT_REQUESTED:
         case GET_STAT_REQUESTED:
         case GET_NOTIFICATION_REQUESTED:
         case GET_STOCK_REQUESTED:
-        case MANAGE_STOCK_REQUESTED:
-        case LOGOUT_SUCCESS:
-            return initialState;
+            return {
+                ...state,
+                general: true,
+            }
         default:
             return {
                 ...state,
