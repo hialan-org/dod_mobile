@@ -13,7 +13,7 @@ import {MaterialIcons} from "@expo/vector-icons";
 const {height} = Dimensions.get('window');
 
 const InvestScreen = ({
-                          getTopYieldLoading, topStocksByDate, navigation,
+                          getTopYieldLoading, topStocksByDate, myStocksMap, navigation,
                           getDoDStocks, getOwnedStocks
                       }) => {
     const [money, setMoney] = useState("");
@@ -38,6 +38,18 @@ const InvestScreen = ({
         getDoDStocks(date);
     }
 
+    const onPressRebalance = () => {
+        let totalMoney = 0;
+
+        for (let [k, v] of myStocksMap) {
+            totalMoney = totalMoney + (v.latestPrice * v.quantity);
+        }
+
+        // console.log('totalMoney:',totalMoney);
+        setMoney(totalMoney);
+        getDoDStocks(date);
+    };
+
     const renderTopStocks = (stock, index) => {
         return (
             <DataTable.Row key={`item-${index}`}>
@@ -50,6 +62,7 @@ const InvestScreen = ({
     }
 
     let suggestedStocks = null;
+    let rebalancedStocks = null;
     let investEachStock = money ? parseFloat(money) / 5 : 0;
     if (topStocksByDate && topStocksByDate[formatDateString(date)]) {
         switch (checked) {
@@ -159,6 +172,27 @@ const InvestScreen = ({
                             <Line/>
                         </>
                     )}
+
+                    {/*    Rebalance */}
+                    {!rebalancedStocks && <Button
+                        style={common.button}
+                        loading={getTopYieldLoading}
+                        onPress={() => {
+                            onPressRebalance()
+                        }}>
+                        <Text style={common.buttonText}>Rebalance</Text>
+                    </Button>}
+                    {rebalancedStocks &&
+                    (
+                        <>
+                            <ListStock titles={["Symbol", "Price", "Yield", "Quantity"]}
+                                       loading={getTopYieldLoading}
+                                       stocks={suggestedStocks}
+                                       renderItem={renderTopStocks}
+                            />
+                            <Line/>
+                        </>
+                    )}
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -169,6 +203,7 @@ const mapStateToProps = state => {
     return {
         topStocksByDate: state.stock.topStocksByDate,
         getTopYieldLoading: state.loading.getTopYield,
+        myStocksMap: state.stock.myStocksMap,
     }
 }
 
