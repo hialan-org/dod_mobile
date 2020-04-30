@@ -10,7 +10,7 @@ import {common} from "../utils/stylesheet";
 
 const {height} = Dimensions.get('window');
 
-const DetailsScreen = ({myStocks, myStocksMap, loading, getOwnedStocks}) => {
+const DetailsScreen = ({myStocks, loading, getOwnedStocks}) => {
     const [screenHeight, setScreenHeight] = useState(height);
     //Detail Screen to show from any Open detail button
     // static navigationOptions = {
@@ -37,7 +37,7 @@ const DetailsScreen = ({myStocks, myStocksMap, loading, getOwnedStocks}) => {
     };
 
     useEffect(() => {
-        myStocksMap == null && getOwnedStocks();
+        myStocks == null && getOwnedStocks();
     }, [])
 
     const scrollEnabled = screenHeight > height;
@@ -64,7 +64,7 @@ const DetailsScreen = ({myStocks, myStocksMap, loading, getOwnedStocks}) => {
             <Text>Details!</Text>
             <ListStock titles={["Symbol", "Buy Price", "Latest Price", "Quantity"]}
                        loading={loading}
-                       stocks={Array.from(myStocksMap.values())}
+                       stocks={Array.from(myStocks.values())}
             renderItem={renderItem}/>
             </ScrollView>
         </SafeAreaView>
@@ -73,7 +73,7 @@ const DetailsScreen = ({myStocks, myStocksMap, loading, getOwnedStocks}) => {
 
 const mapStateToProps = state => {
     return {
-        myStocksMap: state.stock.myStocksMap,
+        myStocks: state.stock.myStocks,
         loading: state.loading.general,
     }
 }

@@ -5,7 +5,7 @@ import {common} from "../utils/stylesheet";
 import {connect} from 'react-redux';
 import {GET_STOCK_REQUESTED, MANAGE_STOCK_REQUESTED} from "../actions/types";
 
-const BuyStocksScreen = ({stocksSymbol, myStocksMap, loading, getStocksSymbol, manageStock}) => {
+const BuyStocksScreen = ({stocksSymbol, myStocks, loading, manageStockLoading, getStocksSymbol, manageStock}) => {
     const [selectedStock, setSelectedStock] = useState(
         stocksSymbol && stocksSymbol.length!=0 ? stocksSymbol[0].stockId : -1);
     const [price, setPrice] = useState("");
@@ -26,7 +26,7 @@ const BuyStocksScreen = ({stocksSymbol, myStocksMap, loading, getStocksSymbol, m
         if(isBuy==='buy'){
             manageStock(stock);
         } else { //If sell, check if user has enough stocks
-            const ownedStock = myStocksMap.get(selectedStock);
+            const ownedStock = myStocks.find(stock => stock.stockId === selectedStock);
             if(ownedStock && ownedStock.quantity >= parseInt(quantity)){
                 manageStock(stock);
             } else {
@@ -87,7 +87,7 @@ const BuyStocksScreen = ({stocksSymbol, myStocksMap, loading, getStocksSymbol, m
                     onChangeText={text => setQuantity(text)}
                     keyboardType='decimal-pad'
                 />
-                <Button icon="plus-circle" mode="contained" onPress={onPressAccepted} loading={loading}>
+                <Button icon="plus-circle" mode="contained" onPress={onPressAccepted} loading={loading || manageStockLoading}>
                     Accept
                 </Button>
             </View>
@@ -97,8 +97,9 @@ const BuyStocksScreen = ({stocksSymbol, myStocksMap, loading, getStocksSymbol, m
 const mapStateToProps = state => {
     return {
         stocksSymbol: state.stock.stocksSymbol,
-        myStocksMap: state.stock.myStocksMap,
+        myStocks: state.stock.myStocks,
         loading: state.loading.general,
+        manageStockLoading: state.loading.manageStock,
     }
 }
 

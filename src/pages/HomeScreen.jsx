@@ -21,7 +21,7 @@ let weekBefore = new Date(getYesterday());
 weekBefore.setDate(weekBefore.getDate() - 7);
 
 function HomeScreen({
-                        getProfitLoading, profit, getOwnedStocksLoading, myStocksMap,
+                        getProfitLoading, profit, getOwnedStocksLoading, myStocks,
                         getProfit, getOwnedStocks
                     }) {
     const [user, setUser] = useState(null);
@@ -31,7 +31,7 @@ function HomeScreen({
         getUserInSecureStore().then((result) => {
             setUser(result);
         });
-        myStocksMap == null && getOwnedStocks();
+        myStocks == null && getOwnedStocks();
     }, [])
 
     useEffect(() => {
@@ -64,7 +64,6 @@ function HomeScreen({
             </DataTable.Row>
         );
     }
-
     return (
         <View style={common.containerWrapper}>
             <StatusBar barStyle="light-content" backgroundColor="#468189"/>
@@ -88,7 +87,7 @@ function HomeScreen({
 
                     <ListStock titles={["Symbol", "Buy Price", "Quantity", "Gain/Loss"]}
                                loading={getOwnedStocksLoading}
-                               stocks={myStocksMap ? Array.from(myStocksMap.values()) : []}
+                               stocks={myStocks ? Array.from(myStocks.values()) : []}
                                renderItem={renderMyStocks}/>
                 </View>
             </ScrollView>
@@ -116,7 +115,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        myStocksMap: state.stock.myStocksMap,
+        myStocks: state.stock.myStocks,
         user: state.user,
         profit: state.stat.profit,
         getOwnedStocksLoading: state.loading.getOwnedStocks,

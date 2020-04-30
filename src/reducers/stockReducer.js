@@ -14,7 +14,7 @@ const initialState = {
     topStocksByDate: null,
     stocksPrice: null,
     stocksSymbol: null,
-    myStocksMap: null,
+    myStocks: null,
 }
 
 export default function stockReducer(state = initialState, action) {
@@ -39,27 +39,24 @@ export default function stockReducer(state = initialState, action) {
                 }),
             }
         case GET_OWNED_STOCKS_SUCCESS:
-            const myStocksMap = new Map();
-            action.payload.map((stock, index) => {
-                myStocksMap.set(stock.stockId, stock);
-            })
+            // let myStocks = new Map();
+            // action.payload.map((stock, index) => {
+            //     myStocks.set(stock.stockId, stock);
+            // })
             return {
                 ...state,
-                myStocksMap: myStocksMap,
+                myStocks: action.payload,
             }
         case MANAGE_STOCK_SUCCESS:
+            let myStocks = [...state.myStocks];
             action.payload.map((ownedStock, index) => {
-                let tmpStock = state.myStocksMap.get(ownedStock.stockId);
+                let tmpStock = myStocks.find(stock => stock.stockId === ownedStock.stockId);
                 if(tmpStock){
                     if(ownedStock.stockQuantity == 0){
-                        state.myStocksMap.delete(ownedStock.stockId);
+                        myStocks = myStocks.filter(stock => stock.stockId!=ownedStock.stockId);
                     } else {
-                        tmpStock = {
-                            ...tmpStock,
-                            buyPrice: ownedStock.stockAveragePrice,
-                            quantity: ownedStock.stockQuantity,
-                        }
-                        state.myStocksMap.set(ownedStock.stockId, tmpStock);
+                        tmpStock.buyPrice = ownedStock.stockAveragePrice;
+                        tmpStock.quantity = ownedStock.stockQuantity;
                     }
                 } else {
                     tmpStock = {
@@ -69,11 +66,13 @@ export default function stockReducer(state = initialState, action) {
                         stockId: ownedStock.stockId,
                         symbol: ownedStock.symbol,
                     }
-                    state.myStocksMap.set(tmpStock.stockId, tmpStock);
+                    // myStocks.set(tmpStock.stockId, tmpStock);
+                    myStocks.push(tmpStock);
                 }
             });
             return {
                 ...state,
+                myStocks: myStocks,
             }
         case GET_STOCKS_PRICE_SUCCESS:
             return {
