@@ -1,4 +1,4 @@
-import {LOGIN_REQUESTED, LOGIN_SUCCESS, GET_TOP_YIELD_STOCKS_SUCCESS, GET_REBALANCE_STOCKS_SUCCESS} from "./types";
+import {LOGIN_REQUESTED, LOGIN_SUCCESS, GET_TOP_YIELD_STOCKS_SUCCESS} from "./types";
 
 export const loginRequest = (accessCode) => ({ type: LOGIN_REQUESTED, payload: accessCode })
 
