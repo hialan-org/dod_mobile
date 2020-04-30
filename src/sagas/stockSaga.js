@@ -2,9 +2,6 @@ import * as SecureStore from 'expo-secure-store';
 import {getTopYieldStocksByDateSuccess, getRebalanceStocksByDateSuccess, loginSuccess} from "../actions";
 import { call, put, takeEvery, all } from 'redux-saga/effects';
 import {
-    GET_REBALANCE_STOCKS_REQUESTED,
-    GET_REBALANCE_STOCKS_SUCCESS,
-    GET_REBALANCE_STOCKS_FAILED,
     GET_TOP_YIELD_STOCKS_REQUESTED,
     GET_TOP_YIELD_STOCKS_SUCCESS,
     GET_TOP_YIELD_STOCKS_FAILED,
@@ -18,22 +15,8 @@ import {
     GET_OWNED_STOCKS_FAILED,
     GET_OWNED_STOCKS_SUCCESS, GET_STOCKS_PRICE_REQUESTED, GET_STOCKS_PRICE_FAILED, GET_STOCKS_PRICE_SUCCESS,
 } from "../actions/types";
-import {getOwnedStocksApi, getStockApi, getStocksPriceByDateApi, getTopYieldApi, manageStockApi, getRebalanceApi} from "../utils/API";
+import {getOwnedStocksApi, getStockApi, getStocksPriceByDateApi, getTopYieldApi, manageStockApi} from "../utils/API";
 import {formatDateString} from "../utils";
-
-function* getRebalanceStockWorker(action) {
-    try{
-        const listStocks = yield call(getRebalanceApi, formatDateString(action.payload.date),10);
-        yield put(getRebalanceStocksByDateSuccess(listStocks, action.payload.date));
-    } catch (e) {
-        alert("Error: " + e);
-        yield put({type: GET_REBALANCE_STOCKS_FAILED, payload: e});
-    }
-}
-
-function* getRebalanceWatcher() {
-    yield takeEvery(GET_REBALANCE_STOCKS_REQUESTED, getRebalanceStockWorker);
-}
 
 function* getTopYieldStocksWorker(action) {
     try{
@@ -137,6 +120,5 @@ export function* stockSaga() {
         manageStockWatcher(),
         getOwnedStocksWatcher(),
         getStocksPriceWatcher(),
-        getRebalanceWatcher(),
     ])
 }

@@ -9,7 +9,3 @@ export const loginSuccess = (user) => (
 export const getTopYieldStocksByDateSuccess = (stocks, date) => (
     { type: GET_TOP_YIELD_STOCKS_SUCCESS, payload: {stocks: stocks, date: date}}
 )
-
-export const getRebalanceStocksByDateSuccess = (stocks, date) => (
-    { type: GET_REBALANCE_STOCKS_SUCCESS, payload: {stocks: stocks, date: date}}
-)
