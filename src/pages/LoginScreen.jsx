@@ -55,7 +55,7 @@ class LoginScreen extends React.Component {
                             <GoogleSignInButton onPress={this.onPress}>
                                 {this.buttonTitle}
                             </GoogleSignInButton>
-                            <Text>AppAuth: {JSON.stringify(scheme, null, 2)}</Text>
+                            {/*<Text>AppAuth: {JSON.stringify(scheme, null, 2)}</Text>*/}
                         </>
                     )}
                 </>

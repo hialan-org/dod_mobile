@@ -74,7 +74,7 @@ const ProfitChart = ({loadingGetProfit, profit, myStocks}) => {
         <>
             {loadingGetProfit
                 ? <ActivityIndicator animating={true}/>
-                : (!myStocks || myStocks.size === 0) ? <Text>Please, Buy some stocks!</Text> :
+                : (!myStocks || myStocks.length === 0) ? <Text>Please, Buy some stocks!</Text> :
                     (profit && profit.length > 0) ? <LineChartWithTooltips
                     data={data}
                     width={screenWidth} // from react-native
