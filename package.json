@@ -24,7 +24,7 @@
     "expo-localization": "~8.1.0",
     "expo-secure-store": "~8.1.0",
     "i18n-js": "^3.5.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "lodash.memoize": "^4.1.2",
     "minimist": "^1.2.5",
     "prop-types": "latest",
